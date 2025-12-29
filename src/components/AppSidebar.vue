@@ -1,46 +1,23 @@
-<script setup lang="ts">
-import {
-    Sidebar,
-    SidebarContent,
-    SidebarGroup,
-    SidebarGroupLabel,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-    SidebarHeader,
-    SidebarFooter
-} from '@/components/ui/sidebar'
-import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Separator } from '@/components/ui/separator'
-import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
-
-const provider = ref('')
-const model = ref('')
-
-const recentChats = [
-    { title: 'Chat about React', date: '2 hours ago' },
-    { title: 'Python debugging', date: 'Yesterday' },
-    { title: 'API design discussion', date: '3 days ago' },
-]
-</script>
-
 <template>
     <Sidebar>
-        <SidebarHeader class="p-6 border-b border-border/50">
-            <div>
-                <Icon icon="ri:chat-ai-line" class="text-3xl text-primary" />
-                <span>AI CHAT VERSE</span>
+        <SidebarHeader class="p-4">
+            <div class="flex items-center gap-4">
+                <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-secondary">
+                    <!-- <Icon icon="ri:chat-ai-line" class="h-4 w-4 text-3xl text-primary" /> -->
+                    <Icon icon="ri:chat-ai-line" width="24" height="24" />
+                </div>
+                <div>
+                    <h1 class="text-sm font-semibold uppercase">AI Chat Verse</h1>
+                    <p class="text-xs  text-muted-foreground">Your AI Assistant</p>
+                </div>
             </div>
         </SidebarHeader>
 
         <SidebarContent class="px-4 py-6">
             <SidebarGroup>
                 <div class="mb-6">
-                    <Button
-                        class="w-full h-12 text-sm font-medium shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-200 bg-gradient-to-r from-primary to-primary/90">
-                        <Icon icon="lucide:plus" class="mr-2 h-5 w-5" />
+                    <Button class="w-full flex gap-6 p-6">
+                        <Icon icon="pajamas:duo-chat-new" width="16" height="16" />
                         New Chat
                     </Button>
                 </div>
@@ -50,8 +27,7 @@ const recentChats = [
                         <label
                             class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 block">Provider</label>
                         <Select v-model="provider">
-                            <SelectTrigger
-                                class="h-11 w-full bg-muted/50 border-border/50 hover:bg-muted/70 transition-colors">
+                            <SelectTrigger class="h-11 w-full">
                                 <SelectValue placeholder="Select provider" />
                             </SelectTrigger>
                             <SelectContent>
@@ -82,17 +58,16 @@ const recentChats = [
                     <div>
                         <label
                             class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 block">Model</label>
-                        <Select v-model="model">
-                            <SelectTrigger
-                                class="h-11 w-full bg-muted/50 border-border/50 hover:bg-muted/70 transition-colors">
+                        <Select v-model="selectedModel">
+                            <SelectTrigger class="h-11 w-full">
                                 <SelectValue placeholder="Select model" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
-                                    <SelectItem value="gpt-4">GPT-4</SelectItem>
-                                    <SelectItem value="gpt-3.5">GPT-3.5</SelectItem>
-                                    <SelectItem value="claude-3">Claude 3</SelectItem>
-                                    <SelectItem value="gemini-pro">Gemini Pro</SelectItem>
+                                    <SelectItem v-for="model in availableModels" :key="model.value"
+                                        :value="model.value">
+                                        {{ model.label }}
+                                    </SelectItem>
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
@@ -127,3 +102,64 @@ const recentChats = [
         </SidebarFooter>
     </Sidebar>
 </template>
+
+<script setup lang="ts">
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarGroup,
+    SidebarGroupLabel,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+    SidebarHeader,
+    SidebarFooter
+} from '@/components/ui/sidebar'
+import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Separator } from '@/components/ui/separator'
+import { Icon } from '@iconify/vue'
+import { ref, computed, watch } from 'vue'
+import type { Provider, ProviderModels, RecentChats } from '@/types'
+
+const provider = ref<Provider>('gpt')
+const selectedModel = ref<string>('gpt-4o-mini')
+
+const providerModels: ProviderModels = {
+    gpt: [
+        { value: 'gpt-4o-mini', label: 'GPT-4o Mini' },
+        { value: 'gpt-4', label: 'GPT-4' },
+        { value: 'gpt-3.5-turbo', label: 'GPT-3.5 Turbo' }
+    ],
+    claude: [
+        { value: 'claude-3-opus', label: 'Claude 3 Opus' },
+        { value: 'claude-3-sonnet', label: 'Claude 3 Sonnet' },
+        { value: 'claude-3-haiku', label: 'Claude 3 Haiku' }
+    ],
+    gemini: [
+        { value: 'gemini-pro', label: 'Gemini Pro' },
+        { value: 'gemini-pro-vision', label: 'Gemini Pro Vision' }
+    ]
+}
+
+const availableModels = computed(() => {
+    return providerModels[provider.value] || []
+})
+
+watch(provider, (newProvider) => {
+    const modelsForProvider = providerModels[newProvider]
+    if (modelsForProvider && modelsForProvider.length > 0) {
+
+        if (modelsForProvider[0]) {
+            selectedModel.value = modelsForProvider[0].value
+        }
+
+    }
+})
+
+const recentChats: RecentChats = [
+    { title: 'Chat about React', date: '2 hours ago' },
+    { title: 'Python debugging', date: 'Yesterday' },
+    { title: 'API design discussion', date: '3 days ago' },
+]
+</script>
