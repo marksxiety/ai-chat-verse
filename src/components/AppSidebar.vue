@@ -32,22 +32,22 @@
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
-                                    <SelectItem value="gpt">
+                                    <SelectItem value="openai">
                                         <div class="flex items-center gap-2">
                                             <Icon icon="ri:openai-fill" class="h-4 w-4" />
-                                            GPT
+                                            OpenAI
                                         </div>
                                     </SelectItem>
-                                    <SelectItem value="claude">
+                                    <SelectItem value="anthropic">
                                         <div class="flex items-center gap-2">
                                             <Icon icon="ri:anthropic-fill" class="h-4 w-4" />
-                                            Claude
+                                            Anthropic
                                         </div>
                                     </SelectItem>
-                                    <SelectItem value="gemini">
+                                    <SelectItem value="google">
                                         <div class="flex items-center gap-2">
                                             <Icon icon="ri:google-fill" class="h-4 w-4" />
-                                            Gemini
+                                            Google
                                         </div>
                                     </SelectItem>
                                 </SelectGroup>
@@ -126,19 +126,19 @@ const provider = ref<Provider>('gpt')
 const selectedModel = ref<string>('gpt-4o-mini')
 
 const providerModels: ProviderModels = {
-    gpt: [
+    openai: [
         { value: 'gpt-4o-mini', label: 'GPT-4o Mini' },
-        { value: 'gpt-4', label: 'GPT-4' },
-        { value: 'gpt-3.5-turbo', label: 'GPT-3.5 Turbo' }
+        { value: 'gpt-4o', label: 'GPT-4o' },
+        { value: 'gpt-4.1', label: 'GPT-4.1' }
     ],
-    claude: [
+    anthropic: [
         { value: 'claude-3-opus', label: 'Claude 3 Opus' },
         { value: 'claude-3-sonnet', label: 'Claude 3 Sonnet' },
         { value: 'claude-3-haiku', label: 'Claude 3 Haiku' }
     ],
-    gemini: [
-        { value: 'gemini-pro', label: 'Gemini Pro' },
-        { value: 'gemini-pro-vision', label: 'Gemini Pro Vision' }
+    google: [
+        { value: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro' },
+        { value: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash' }
     ]
 }
 

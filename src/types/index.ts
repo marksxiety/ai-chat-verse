@@ -1,5 +1,5 @@
 
-export type Provider = 'gpt' | 'claude' | 'gemini'
+export type Provider = string
 
 export interface ModelOption {
     value: string
