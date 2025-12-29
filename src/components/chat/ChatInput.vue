@@ -20,28 +20,25 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch, nextTick } from "vue"
 import { Icon } from "@iconify/vue"
 
 const input = ref("")
 const isLoading = ref(false)
-const textareaRef = ref(null)
+const textareaRef = ref<HTMLTextAreaElement | null>(null)
 
-// Auto-adjust textarea height
 watch(input, async () => {
     await nextTick()
     const textarea = textareaRef.value
     if (textarea) {
-        textarea.style.height = "auto" // Reset height first
-        // Calculate new height, with a minimum and maximum
+        textarea.style.height = "auto"
         const newHeight = Math.max(44, Math.min(textarea.scrollHeight, 200))
         textarea.style.height = `${newHeight}px`
     }
 })
 
-// Placeholder handlers
-function handleKeyDown(e) {
+function handleKeyDown(e: KeyboardEvent) {
     if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault()
         handleSubmit()

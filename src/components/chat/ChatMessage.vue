@@ -27,14 +27,12 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Icon } from "@iconify/vue"
+import type { MessageProps } from '@/types'
 
-// Props
-const props = defineProps({
-    role: { type: String, required: true }, // "user" or "assistant"
-    content: { type: String, required: true },
-    isLoading: { type: Boolean, default: false }
+const props = withDefaults(defineProps<MessageProps>(), {
+    isLoading: false
 })
 
 const isUser = props.role === "user"
