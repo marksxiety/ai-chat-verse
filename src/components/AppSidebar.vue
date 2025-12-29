@@ -7,13 +7,13 @@
                     <Icon icon="ri:chat-ai-line" width="24" height="24" />
                 </div>
                 <div>
-                    <h1 class="text-sm font-semibold uppercase">AI Chat Verse</h1>
+                    <h1 class="text-sm tracking-wider font-semibold uppercase">AI Chat Verse</h1>
                     <p class="text-xs  text-muted-foreground">Your AI Assistant</p>
                 </div>
             </div>
         </SidebarHeader>
 
-        <SidebarContent class="px-4 py-6">
+        <SidebarContent class="p-2">
             <SidebarGroup>
                 <div class="mb-6">
                     <Button class="w-full flex gap-6 p-6">
@@ -21,8 +21,8 @@
                         New Chat
                     </Button>
                 </div>
-
-                <div class="space-y-4 mb-6">
+                <Separator class="mb-4" />
+                <div class="space-y-4 mb-4">
                     <div>
                         <label
                             class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 block">Provider</label>
@@ -82,11 +82,9 @@
                 <SidebarMenu>
                     <SidebarMenuItem v-for="chat in recentChats" :key="chat.title">
                         <SidebarMenuButton as-child
-                            class="h-11 px-3 rounded-lg hover:bg-muted/80 transition-all duration-200">
+                            class="h-11 px-3 rounded-lg hover:bg-primary/50 transition-all duration-200">
                             <a href="#" class="flex items-center gap-3">
-                                <Icon icon="lucide:message-square" class="h-4 w-4 text-muted-foreground" />
                                 <span class="flex-1 text-sm truncate text-left">{{ chat.title }}</span>
-                                <span class="text-xs text-muted-foreground">{{ chat.date }}</span>
                             </a>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
