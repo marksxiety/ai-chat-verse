@@ -29,14 +29,17 @@
 import { ref, watch, nextTick, computed } from "vue"
 import { Icon } from "@iconify/vue"
 import { useModelProviderStore } from '@/stores/ModelProviderStore'
+import { useChatHistoryStore } from '@/stores/ChatHistoryStore'
 import { Badge } from '@/components/ui/badge'
 
 const modelProvider = useModelProviderStore()
+const chatHistory = useChatHistoryStore()
+
 const provider = computed(() => modelProvider.getProviderLabel)
 const model = computed(() => modelProvider.getModelLabel)
+const isLoading = computed(() => chatHistory.isLoading)
 
 const input = ref("")
-const isLoading = ref(false)
 const textareaRef = ref<HTMLTextAreaElement | null>(null)
 
 watch(input, async () => {
@@ -56,9 +59,10 @@ function handleKeyDown(e: KeyboardEvent) {
     }
 }
 
-function handleSubmit() {
+async function handleSubmit() {
     if (!input.value.trim() || isLoading.value) return
-    console.log("Submit:", input.value)
+    const message = input.value
     input.value = ""
+    await chatHistory.sendMessage(message)
 }
 </script>
