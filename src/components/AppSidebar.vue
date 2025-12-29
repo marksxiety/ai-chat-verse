@@ -84,7 +84,8 @@
                             'h-11 px-3 rounded-lg hover:bg-primary/50 transition-all duration-200',
                             chatHistory.currentChatId === chat.id && 'bg-primary/30'
                         ]">
-                            <a href="#" @click.prevent="chatHistory.selectChat(chat.id)" class="flex items-center gap-3">
+                            <a href="#" @click.prevent="chatHistory.selectChat(chat.id)"
+                                class="flex items-center gap-3">
                                 <span class="flex-1 text-sm truncate text-left">{{ chat.title }}</span>
                                 <span class="text-xs text-muted-foreground">{{ formatTimestamp(chat.timestamp) }}</span>
                             </a>
@@ -131,6 +132,7 @@ import type { Provider, ProviderModels } from '@/types'
 import { useModelProviderStore } from '@/stores/ModelProviderStore'
 import { useChatHistoryStore } from '@/stores/ChatHistoryStore'
 import chatHistoryData from '@/data/chatHistory.json'
+import ProviderModelsData from '@/data/ProviderModels.json'
 
 const modelProvider = useModelProviderStore()
 const chatHistory = useChatHistoryStore()
@@ -151,22 +153,7 @@ const getModelLabel = (modelValue: string) => {
     return model?.label || modelValue
 }
 
-const providerModels: ProviderModels = {
-    openai: [
-        { value: 'gpt-4o-mini', label: 'GPT-4o Mini' },
-        { value: 'gpt-4o', label: 'GPT-4o' },
-        { value: 'gpt-4.1', label: 'GPT-4.1' }
-    ],
-    anthropic: [
-        { value: 'claude-3-opus', label: 'Claude 3 Opus' },
-        { value: 'claude-3-sonnet', label: 'Claude 3 Sonnet' },
-        { value: 'claude-3-haiku', label: 'Claude 3 Haiku' }
-    ],
-    google: [
-        { value: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro' },
-        { value: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash' }
-    ]
-}
+const providerModels: ProviderModels = ProviderModelsData ?? {}
 
 const availableModels = computed(() => {
     return providerModels[selectedProvider.value] || []
