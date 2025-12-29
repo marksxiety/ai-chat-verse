@@ -6,4 +6,10 @@ export interface ModelOption {
     label: string
 }
 
-export type ProviderModels = Record<Provider, ModelOption[]>
+export interface ProviderInfo {
+    label: string
+    icon: string
+    models: ModelOption[]
+}
+
+export type ProviderModels = Record<Provider, ProviderInfo>
