@@ -3,12 +3,11 @@
         <SidebarHeader class="p-4">
             <div class="flex items-center gap-4">
                 <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-secondary">
-                    <!-- <Icon icon="ri:chat-ai-line" class="h-4 w-4 text-3xl text-primary" /> -->
                     <Icon icon="ri:chat-ai-line" width="24" height="24" />
                 </div>
                 <div>
                     <h1 class="text-sm tracking-wider font-semibold uppercase">AI Chat Verse</h1>
-                    <p class="text-xs  text-muted-foreground">Your AI Assistant</p>
+                    <p class="text-xs text-muted-foreground">Your AI Assistant</p>
                 </div>
             </div>
         </SidebarHeader>
@@ -16,7 +15,7 @@
         <SidebarContent class="p-2">
             <SidebarGroup>
                 <div class="mb-6">
-                    <Button class="w-full flex gap-6 p-6">
+                    <Button @click="handleNewChat" class="w-full flex gap-6 p-6">
                         <Icon icon="pajamas:duo-chat-new" width="16" height="16" />
                         New Chat
                     </Button>
@@ -80,15 +79,25 @@
                     class="px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Recent Chats
                 </SidebarGroupLabel>
                 <SidebarMenu>
-                    <SidebarMenuItem v-for="chat in recentChats" :key="chat.title">
-                        <SidebarMenuButton as-child
-                            class="h-11 px-3 rounded-lg hover:bg-primary/50 transition-all duration-200">
-                            <a href="#" class="flex items-center gap-3">
+                    <SidebarMenuItem v-for="chat in chatHistory.sortedChats" :key="chat.id">
+                        <SidebarMenuButton as-child :class="[
+                            'h-11 px-3 rounded-lg hover:bg-primary/50 transition-all duration-200',
+                            chatHistory.currentChatId === chat.id && 'bg-primary/30'
+                        ]">
+                            <a href="#" @click.prevent="chatHistory.selectChat(chat.id)" class="flex items-center gap-3">
                                 <span class="flex-1 text-sm truncate text-left">{{ chat.title }}</span>
+                                <span class="text-xs text-muted-foreground">{{ formatTimestamp(chat.timestamp) }}</span>
                             </a>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
+
+                <!-- Empty state when no chats -->
+                <div v-if="chatHistory.chats.length === 0" class="text-center py-8 px-4">
+                    <Icon icon="lucide:message-square" class="h-12 w-12 mx-auto mb-2 text-muted-foreground/50" />
+                    <p class="text-sm text-muted-foreground">No chats yet</p>
+                    <p class="text-xs text-muted-foreground/70">Start a new conversation</p>
+                </div>
             </SidebarGroup>
         </SidebarContent>
 
@@ -118,10 +127,13 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Separator } from '@/components/ui/separator'
 import { Icon } from '@iconify/vue'
 import { ref, computed, watch, onMounted } from 'vue'
-import type { Provider, ProviderModels, RecentChats } from '@/types'
+import type { Provider, ProviderModels } from '@/types'
 import { useModelProviderStore } from '@/stores/ModelProviderStore'
+import { useChatHistoryStore } from '@/stores/ChatHistoryStore'
+import chatHistoryData from '@/data/chatHistory.json'
 
 const modelProvider = useModelProviderStore()
+const chatHistory = useChatHistoryStore()
 
 const selectedProvider = ref<Provider>('openai')
 const selectedModel = ref<string>('gpt-4o-mini')
@@ -160,14 +172,30 @@ const availableModels = computed(() => {
     return providerModels[selectedProvider.value] || []
 })
 
+// Chat history functions
+function handleNewChat() {
+    chatHistory.createNewChat()
+}
+
+function formatTimestamp(timestamp: string) {
+    const date = new Date(timestamp)
+    const now = new Date()
+    const diffInMs = now.getTime() - date.getTime()
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
+
+    if (diffInDays === 0) return 'Today'
+    if (diffInDays === 1) return 'Yesterday'
+    if (diffInDays < 7) return `${diffInDays} days ago`
+    if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} weeks ago`
+    return date.toLocaleDateString()
+}
+
 watch(selectedProvider, (newProvider) => {
     const modelsForProvider = providerModels[newProvider]
     if (modelsForProvider && modelsForProvider.length > 0) {
-
         if (modelsForProvider[0]) {
             selectedModel.value = modelsForProvider[0].value
         }
-
     }
     modelProvider.setProvider(newProvider, getProviderLabel(newProvider))
 })
@@ -176,13 +204,10 @@ watch(selectedModel, (newModel) => {
     modelProvider.setModel(newModel, getModelLabel(newModel))
 })
 
-const recentChats: RecentChats = [
-    { title: 'Chat about React', date: '2 hours ago' },
-    { title: 'Python debugging', date: 'Yesterday' },
-    { title: 'API design discussion', date: '3 days ago' },
-]
-
 onMounted(() => {
+    // Load chat history data
+    chatHistory.loadChats(chatHistoryData)
+
     modelProvider.setProvider(selectedProvider.value, getProviderLabel(selectedProvider.value))
     modelProvider.setModel(selectedModel.value, getModelLabel(selectedModel.value))
 })
