@@ -1,5 +1,5 @@
 <template>
-    <div v-if="chatHistory.currentMessages.length === 0" class="flex flex-1 flex-col items-center justify-center h-full">
+    <div v-if="chatHistory.currentMessages.length === 0" class="flex flex-1 flex-col items-center justify-center p-8">
         <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
             <Icon icon="mdi:message-plus" class="h-8 w-8 text-muted-foreground" />
         </div>
@@ -8,7 +8,7 @@
             Choose your AI provider and model from the sidebar, then type a message to begin chatting.
         </p>
     </div>
-    <div v-else class="space-y-6">
+    <div v-else class="space-y-6 animate-fade-in">
         <div v-for="message in chatHistory.currentMessages" :key="message.id"
             :class="['flex gap-4 animate-fade-in', message.role === 'user' ? 'flex-row-reverse' : 'flex-row']">
             <div :class="[
