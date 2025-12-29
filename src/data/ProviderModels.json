@@ -1,40 +1,38 @@
 {
-    "openai": [
-        {
-            "value": "gpt-4o-mini",
-            "label": "GPT-4o Mini"
-        },
-        {
-            "value": "gpt-4o",
-            "label": "GPT-4o"
-        },
-        {
-            "value": "gpt-4.1",
-            "label": "GPT-4.1"
-        }
-    ],
-    "anthropic": [
-        {
-            "value": "claude-3-opus",
-            "label": "Claude 3 Opus"
-        },
-        {
-            "value": "claude-3-sonnet",
-            "label": "Claude 3 Sonnet"
-        },
-        {
-            "value": "claude-3-haiku",
-            "label": "Claude 3 Haiku"
-        }
-    ],
-    "google": [
-        {
-            "value": "gemini-1.5-pro",
-            "label": "Gemini 1.5 Pro"
-        },
-        {
-            "value": "gemini-1.5-flash",
-            "label": "Gemini 1.5 Flash"
-        }
-    ]
+    "openai": {
+        "label": "OpenAI",
+        "icon": "simple-icons:openai",
+        "models": [
+            {
+                "value": "gpt-4o-mini",
+                "label": "GPT-4o Mini (Budget)"
+            },
+            {
+                "value": "gpt-5-mini",
+                "label": "GPT-5 Mini (2025 Budget)"
+            },
+            {
+                "value": "gpt-4o",
+                "label": "GPT-4o"
+            },
+            {
+                "value": "gpt-4.1",
+                "label": "GPT-4.1"
+            }
+        ]
+    },
+    "zai": {
+        "label": "Z.ai (Coding Plan)",
+        "icon": "ri:brain-line",
+        "models": [
+            {
+                "value": "GLM-4.7",
+                "label": "GLM-4.7 (Coding)"
+            },
+            {
+                "value": "GLM-4.5-Air",
+                "label": "GLM-4.5 Air"
+            }
+        ]
+    }
 }
