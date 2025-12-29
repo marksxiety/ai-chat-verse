@@ -119,6 +119,9 @@ import { Separator } from '@/components/ui/separator'
 import { Icon } from '@iconify/vue'
 import { ref, computed, watch } from 'vue'
 import type { Provider, ProviderModels, RecentChats } from '@/types'
+import { useModelProviderStore } from '@/stores/ModelProviderStore'
+
+const modelProvider = useModelProviderStore()
 
 const provider = ref<Provider>('gpt')
 const selectedModel = ref<string>('gpt-4o-mini')
@@ -153,6 +156,11 @@ watch(provider, (newProvider) => {
         }
 
     }
+    modelProvider.setProvider(newProvider)
+})
+
+watch(selectedModel, (newModel) => {
+    modelProvider.setModel(newModel)
 })
 
 const recentChats: RecentChats = [
