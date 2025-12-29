@@ -1,5 +1,5 @@
 <template>
-    <div class="flex-1 flex flex-col items-center h-full min-h-0 max-h-[80vh] p-6">
+    <div class="flex-1 flex flex-col items-center h-full min-h-0 max-h-[75vh] p-6">
         <div class="w-full min-w-72 max-w-5xl flex-1 flex flex-col h-full min-h-0">
             <ScrollArea class="flex-1 w-full h-full min-h-0">
                 <div v-if="messages.length === 0" class="flex flex-1 flex-col items-center justify-center h-full">

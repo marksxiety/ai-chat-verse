@@ -26,7 +26,7 @@
                     <div>
                         <label
                             class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 block">Provider</label>
-                        <Select v-model="provider">
+                        <Select v-model="selectedProvider">
                             <SelectTrigger class="h-11 w-full">
                                 <SelectValue placeholder="Select provider" />
                             </SelectTrigger>
@@ -117,14 +117,27 @@ import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { Icon } from '@iconify/vue'
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import type { Provider, ProviderModels, RecentChats } from '@/types'
 import { useModelProviderStore } from '@/stores/ModelProviderStore'
 
 const modelProvider = useModelProviderStore()
 
-const provider = ref<Provider>('gpt')
+const selectedProvider = ref<Provider>('openai')
 const selectedModel = ref<string>('gpt-4o-mini')
+
+const providerLabels: Record<Provider, string> = {
+    openai: 'OpenAI',
+    anthropic: 'Anthropic',
+    google: 'Google'
+}
+
+const getProviderLabel = (provider: Provider) => providerLabels[provider]
+const getModelLabel = (modelValue: string) => {
+    const allModels = Object.values(providerModels).flat()
+    const model = allModels.find(m => m.value === modelValue)
+    return model?.label || modelValue
+}
 
 const providerModels: ProviderModels = {
     openai: [
@@ -144,10 +157,10 @@ const providerModels: ProviderModels = {
 }
 
 const availableModels = computed(() => {
-    return providerModels[provider.value] || []
+    return providerModels[selectedProvider.value] || []
 })
 
-watch(provider, (newProvider) => {
+watch(selectedProvider, (newProvider) => {
     const modelsForProvider = providerModels[newProvider]
     if (modelsForProvider && modelsForProvider.length > 0) {
 
@@ -156,11 +169,11 @@ watch(provider, (newProvider) => {
         }
 
     }
-    modelProvider.setProvider(newProvider)
+    modelProvider.setProvider(newProvider, getProviderLabel(newProvider))
 })
 
 watch(selectedModel, (newModel) => {
-    modelProvider.setModel(newModel)
+    modelProvider.setModel(newModel, getModelLabel(newModel))
 })
 
 const recentChats: RecentChats = [
@@ -168,4 +181,9 @@ const recentChats: RecentChats = [
     { title: 'Python debugging', date: 'Yesterday' },
     { title: 'API design discussion', date: '3 days ago' },
 ]
+
+onMounted(() => {
+    modelProvider.setProvider(selectedProvider.value, getProviderLabel(selectedProvider.value))
+    modelProvider.setModel(selectedModel.value, getModelLabel(selectedModel.value))
+})
 </script>

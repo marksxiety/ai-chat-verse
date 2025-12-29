@@ -1,6 +1,11 @@
 <template>
     <div class="bg-background p-4">
         <div class="mx-auto max-w-3xl">
+            <div class="mb-2 flex items-center justify-center">
+                <Badge variant="secondary" class="text-xs font-normal">
+                    {{ provider }} · {{ model }}
+                </Badge>
+            </div>
             <div
                 class="relative flex items-end gap-2 rounded-xl border border-input bg-card p-2 shadow-sm transition-shadow focus-within:shadow-md focus-within:ring-1 focus-within:ring-ring">
                 <textarea v-model="input" ref="textareaRef" placeholder="Type your message..." @keydown="handleKeyDown"
@@ -21,8 +26,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick } from "vue"
+import { ref, watch, nextTick, computed } from "vue"
 import { Icon } from "@iconify/vue"
+import { useModelProviderStore } from '@/stores/ModelProviderStore'
+import { Badge } from '@/components/ui/badge'
+
+const modelProvider = useModelProviderStore()
+const provider = computed(() => modelProvider.getProviderLabel)
+const model = computed(() => modelProvider.getModelLabel)
 
 const input = ref("")
 const isLoading = ref(false)

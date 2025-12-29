@@ -2,23 +2,31 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
 export const useModelProviderStore = defineStore('modelProvider', () => {
-    const provider = ref<string>('')
-    const model = ref<string>('')
+    const providerValue = ref<string | undefined>('')
+    const providerLabel = ref<string | undefined>('')
+    const modelValue = ref<string | undefined>('')
+    const modelLabel = ref<string | undefined>('')
 
-    const getProvider = computed(() => provider.value)
-    const setProvider = (value: string) => {
-        provider.value = value
+    const getProviderValue = computed(() => providerValue.value)
+    const getProviderLabel = computed(() => providerLabel.value)
+    const setProvider = (value: string | undefined, label: string | undefined) => {
+        providerValue.value = value
+        providerLabel.value = label
     }
 
-    const getModel = computed(() => model.value)
-    const setModel = (value: string) => {
-        model.value = value
+    const getModelValue = computed(() => modelValue.value)
+    const getModelLabel = computed(() => modelLabel.value)
+    const setModel = (value: string | undefined, label: string | undefined) => {
+        modelValue.value = value
+        modelLabel.value = label
     }
 
     return {
-        getProvider,
+        getProviderValue,
+        getProviderLabel,
         setProvider,
-        getModel,
+        getModelValue,
+        getModelLabel,
         setModel
     }
 })
