@@ -9,7 +9,7 @@
         </p>
     </div>
     <div v-else class="space-y-6 animate-fade-in">
-        <div v-for="message in chatHistory.currentMessages" :key="message.id"
+        <div v-for="(message, index) in chatHistory.currentMessages" :key="message.id"
             :class="['flex gap-4 animate-fade-in', message.role === 'user' ? 'flex-row-reverse' : 'flex-row']">
             <div :class="[
                 'flex h-9 w-9 shrink-0 items-center justify-center rounded-full',
@@ -26,7 +26,8 @@
                     ? 'bg-chat-user-bg text-chat-user-fg rounded-tr-sm'
                     : 'border border-chat-ai-border bg-chat-ai-bg text-chat-ai-fg rounded-tl-sm'
             ]">
-                <div v-if="message.content === ''" class="flex items-center gap-1.5 py-1">
+                <div v-if="chatHistory.isLoading && message.role === 'assistant' && message.content === '' && index === chatHistory.currentMessages.length - 1"
+                    class="flex items-center gap-1.5 py-1">
                     <span class="h-2 w-2 rounded-full bg-current animate-pulse-dot" />
                     <span class="h-2 w-2 rounded-full bg-current animate-pulse-dot-delay-1" />
                     <span class="h-2 w-2 rounded-full bg-current animate-pulse-dot-delay-2" />
