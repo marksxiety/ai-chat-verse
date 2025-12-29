@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { useMultiProviderStream } from '@/composables/useMultiProviderStream'
 
 interface Message {
     id: string
@@ -103,28 +104,45 @@ export const useChatHistoryStore = defineStore('chatHistory', () => {
     }
 
     async function sendMessage(userMessage: string) {
+        if (!currentChat.value) {
+            createNewChat()
+        }
+
         isLoading.value = true
         addMessage('user', userMessage)
 
-        const sampleResponses = [
-            "That's an interesting question! Let me think about it for a moment. Based on my knowledge, I'd say the key consideration here is understanding the context and applying the right principles.",
-            "Great question! Here's what I can tell you about that. The main thing to remember is that there are multiple approaches, and the best one depends on your specific situation.",
-            "I'd be happy to help with that! The short answer is that it depends on several factors. Let me explain the key considerations in more detail.",
-            "That's a thoughtful question. In my experience, the most important factors to consider are the requirements, constraints, and goals of your particular use case.",
-            "Excellent question! There are several ways to approach this, and I'll walk you through the most common and effective methods."
-        ]
+        const { streamMessage } = useMultiProviderStream()
 
-        await new Promise(resolve => setTimeout(resolve, 1500))
-        const randomResponse = sampleResponses[Math.floor(Math.random() * sampleResponses.length)]
-        if (randomResponse) {
-            addMessage('assistant', randomResponse)
-        } else {
-            addMessage('assistant', 'Something error occured.')
-        }
+        const messages = currentMessages.value.map(msg => ({
+            role: msg.role,
+            content: msg.content
+        }))
 
-        isLoading.value = false
+        // Don't add empty message - create it when first chunk arrives
+        let assistantMessageId: string | null = null
+
+        await streamMessage(messages, (chunk: string) => {
+            if (!assistantMessageId) {
+                // First chunk - create the message
+                addMessage('assistant', chunk)
+                const lastMessage = currentChat.value?.messages[currentChat.value.messages.length - 1]
+                if (lastMessage) {
+                    assistantMessageId = lastMessage.id
+                    isLoading.value = false
+                }
+
+                isLoading.value = false
+            } else {
+                // Subsequent chunks - append to existing message
+                const messageToUpdate = currentChat.value?.messages.find(m => m.id === assistantMessageId)
+                if (messageToUpdate) {
+                    messageToUpdate.content += chunk
+                }
+            }
+        })
+
+
     }
-
     return {
         // State
         chats,
