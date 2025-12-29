@@ -32,6 +32,7 @@
                     <span class="h-2 w-2 rounded-full bg-current animate-pulse-dot-delay-1" />
                     <span class="h-2 w-2 rounded-full bg-current animate-pulse-dot-delay-2" />
                 </div>
+                <MarkdownRenderer v-if="message.role === 'assistant'" :content="message.content" />
                 <p v-else class="text-sm leading-relaxed whitespace-pre-wrap">{{ message.content }}</p>
             </div>
         </div>
@@ -41,6 +42,7 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue"
 import { useChatHistoryStore } from '@/stores/ChatHistoryStore'
+import MarkdownRenderer from '@/components/MarkdownRenderer .vue'
 
 const chatHistory = useChatHistoryStore()
 </script>
