@@ -31,22 +31,10 @@
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
-                                    <SelectItem value="openai">
+                                    <SelectItem v-for="(info, provider) in providerModels" :key="provider" :value="provider">
                                         <div class="flex items-center gap-2">
-                                            <Icon icon="ri:openai-fill" class="h-4 w-4" />
-                                            OpenAI
-                                        </div>
-                                    </SelectItem>
-                                    <SelectItem value="anthropic">
-                                        <div class="flex items-center gap-2">
-                                            <Icon icon="ri:anthropic-fill" class="h-4 w-4" />
-                                            Anthropic
-                                        </div>
-                                    </SelectItem>
-                                    <SelectItem value="google">
-                                        <div class="flex items-center gap-2">
-                                            <Icon icon="ri:google-fill" class="h-4 w-4" />
-                                            Google
+                                            <Icon :icon="info.icon" class="h-4 w-4" />
+                                            {{ info.label }}
                                         </div>
                                     </SelectItem>
                                 </SelectGroup>
@@ -140,23 +128,18 @@ const chatHistory = useChatHistoryStore()
 const selectedProvider = ref<Provider>('openai')
 const selectedModel = ref<string>('gpt-4o-mini')
 
-const providerLabels: Record<Provider, string> = {
-    openai: 'OpenAI',
-    anthropic: 'Anthropic',
-    google: 'Google'
-}
-
-const getProviderLabel = (provider: Provider) => providerLabels[provider]
-const getModelLabel = (modelValue: string) => {
-    const allModels = Object.values(providerModels).flat()
-    const model = allModels.find(m => m.value === modelValue)
-    return model?.label || modelValue
-}
-
 const providerModels: ProviderModels = ProviderModelsData ?? {}
 
+const getModelLabel = (modelValue: string) => {
+    for (const provider in providerModels) {
+        const model = providerModels[provider]?.models.find(m => m.value === modelValue)
+        if (model) return model.label
+    }
+    return modelValue
+}
+
 const availableModels = computed(() => {
-    return providerModels[selectedProvider.value] || []
+    return providerModels[selectedProvider.value]?.models || []
 })
 
 // Chat history functions
@@ -178,13 +161,14 @@ function formatTimestamp(timestamp: string) {
 }
 
 watch(selectedProvider, (newProvider) => {
-    const modelsForProvider = providerModels[newProvider]
-    if (modelsForProvider && modelsForProvider.length > 0) {
-        if (modelsForProvider[0]) {
-            selectedModel.value = modelsForProvider[0].value
+    const providerInfo = providerModels[newProvider]
+    if (providerInfo?.models && providerInfo.models.length > 0) {
+        const firstModel = providerInfo.models[0]
+        if (firstModel) {
+            selectedModel.value = firstModel.value
         }
     }
-    modelProvider.setProvider(newProvider, getProviderLabel(newProvider))
+    modelProvider.setProvider(newProvider, providerInfo?.label || newProvider)
 })
 
 watch(selectedModel, (newModel) => {
@@ -195,7 +179,8 @@ onMounted(() => {
     // Load chat history data
     chatHistory.loadChats(chatHistoryData)
 
-    modelProvider.setProvider(selectedProvider.value, getProviderLabel(selectedProvider.value))
+    const providerInfo = providerModels[selectedProvider.value]
+    modelProvider.setProvider(selectedProvider.value, providerInfo?.label || selectedProvider.value)
     modelProvider.setModel(selectedModel.value, getModelLabel(selectedModel.value))
 })
 </script>
