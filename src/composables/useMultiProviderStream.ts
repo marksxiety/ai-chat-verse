@@ -1,4 +1,3 @@
-import OpenAI from "openai";
 import { ref } from 'vue'
 import { useModelProviderStore } from '@/stores/ModelProviderStore'
 
@@ -25,22 +24,39 @@ export function useMultiProviderStream() {
     }
 
     async function streamOpenAI(messages: any[], onChunk: (chunk: string) => void) {
-        const openai = new OpenAI({
-            apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-            dangerouslyAllowBrowser: true,
-        });
         try {
-            const result = await openai.chat.completions.create({
-                model: modelProvider.getModelValue || "gpt-4o-mini",
-                messages,
-                stream: true,
+            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT || 3001}/api/chat/openai`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    messages,
+                    model: modelProvider.getModelValue || 'gpt-4o-mini'
+                })
             });
 
-            for await (const chunk of result) {
-                const delta = chunk.choices?.[0]?.delta?.content;
-                if (delta) {
-                    streamedContent.value += delta
-                    onChunk(delta);
+            const reader = response.body?.getReader();
+            const decoder = new TextDecoder();
+
+            if (!reader) throw new Error('No reader');
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                const chunk = decoder.decode(value);
+                const lines = chunk.split('\n').filter(line => line.trim());
+
+                for (const line of lines) {
+                    if (line === 'data: [DONE]') continue;
+                    if (line.startsWith('data: ')) {
+                        try {
+                            const json = JSON.parse(line.slice(6));
+                            if (json.content) {
+                                streamedContent.value += json.content;
+                                onChunk(json.content);
+                            }
+                        } catch (e) { }
+                    }
                 }
             }
 
@@ -54,34 +70,39 @@ export function useMultiProviderStream() {
     }
 
     async function streamZhipu(messages: any[], onChunk: (chunk: string) => void) {
-        const client = new OpenAI({
-            apiKey: import.meta.env.VITE_ZHIPU_API_KEY,
-            baseURL: 'https://api.z.ai/api/coding/paas/v4',
-            dangerouslyAllowBrowser: true,
-        });
-
-        // Create an instruction to force English 
-        // since GLM is developed by Zhipu AI (a Chinese company), its default "personality"
-        // and system-level greetings are set to Chinese
-        const systemInstruction = {
-            role: "system",
-            content: "You are a helpful coding assistant. You must respond strictly in English unless the user specifically asks you to speak in another language."
-        };
-
-        const finalMessages = [systemInstruction, ...messages];
-
         try {
-            const result = await client.chat.completions.create({
-                model: modelProvider.getModelValue || 'GLM-4.7',
-                messages: finalMessages, // Use the updated array
-                stream: true,
+            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT || 3001}/api/chat/zhipu`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    messages,
+                    model: modelProvider.getModelValue || 'GLM-4.7'
+                })
             });
 
-            for await (const chunk of result) {
-                const delta = chunk.choices?.[0]?.delta?.content;
-                if (delta) {
-                    streamedContent.value += delta;
-                    onChunk(delta);
+            const reader = response.body?.getReader();
+            const decoder = new TextDecoder();
+
+            if (!reader) throw new Error('No reader');
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                const chunk = decoder.decode(value);
+                const lines = chunk.split('\n').filter(line => line.trim());
+
+                for (const line of lines) {
+                    if (line === 'data: [DONE]') continue;
+                    if (line.startsWith('data: ')) {
+                        try {
+                            const json = JSON.parse(line.slice(6));
+                            if (json.content) {
+                                streamedContent.value += json.content;
+                                onChunk(json.content);
+                            }
+                        } catch (e) { }
+                    }
                 }
             }
 
