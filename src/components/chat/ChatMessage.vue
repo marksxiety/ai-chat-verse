@@ -14,7 +14,7 @@
             <div :class="[
                 'flex h-9 w-9 shrink-0 items-center justify-center rounded-full',
                 message.role === 'user'
-                    ? 'bg-chat-user-bg text-chat-user-fg'
+                    ? 'border bg-chat-user-bg text-chat-user-fg'
                     : 'border border-chat-ai-border bg-chat-ai-bg text-chat-ai-fg'
             ]">
                 <Icon :icon="message.role === 'user' ? 'mdi:account' : 'mdi:robot'" class="h-5 w-5" />
@@ -23,7 +23,7 @@
             <div :class="[
                 'max-w-[75%] rounded-2xl px-4 py-3',
                 message.role === 'user'
-                    ? 'bg-chat-user-bg text-chat-user-fg rounded-tr-sm'
+                    ? 'border bg-chat-user-bg text-chat-user-fg rounded-tr-sm'
                     : 'border border-chat-ai-border bg-chat-ai-bg text-chat-ai-fg rounded-tl-sm'
             ]">
                 <div v-if="chatHistory.isLoading && message.role === 'assistant' && message.content === '' && index === chatHistory.currentMessages.length - 1"
