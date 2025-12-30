@@ -1,1 +1,172 @@
-[]
+[
+    {
+        "id": "1",
+        "title": "Getting started with React hooks",
+        "timestamp": "2025-12-30T10:30:00.000Z",
+        "messages": [
+            {
+                "id": "1-1",
+                "role": "user",
+                "content": "How do I use useEffect in React?"
+            },
+            {
+                "id": "1-2",
+                "role": "assistant",
+                "content": "# Using useEffect in React\n\n`useEffect` is a React Hook that lets you perform side effects in functional components.\n\n## Basic Syntax\n\n```javascript\nuseEffect(() => {\n  // Your side effect here\n  return () => {\n    // Optional cleanup function\n  }\n}, [dependencies])\n```\n\n## Common Use Cases\n\n1. **Data Fetching**\n```javascript\nuseEffect(() => {\n  fetchData().then(data => setData(data))\n}, [])\n```\n\n2. **Event Listeners**\n```javascript\nuseEffect(() => {\n  window.addEventListener('resize', handleResize)\n  return () => window.removeEventListener('resize', handleResize)\n}, [])\n```\n\n3. **Reacting to prop changes**\n```javascript\nuseEffect(() => {\n  document.title = `Count: ${count}`\n}, [count])\n```"
+            }
+        ]
+    },
+    {
+        "id": "2",
+        "title": "Explain machine learning basics",
+        "timestamp": "2025-12-29T15:45:00.000Z",
+        "messages": [
+            {
+                "id": "2-1",
+                "role": "user",
+                "content": "Can you explain what machine learning is?"
+            },
+            {
+                "id": "2-2",
+                "role": "assistant",
+                "content": "# Machine Learning Basics\n\n## What is Machine Learning?\n\nMachine Learning (ML) is a subset of artificial intelligence that enables computers to learn and improve from experience without being explicitly programmed.\n\n## Key Concepts\n\n### 1. **Types of Learning**\n\n- **Supervised Learning**: Learning with labeled data\n  - Examples: Classification, Regression\n\n- **Unsupervised Learning**: Finding patterns in unlabeled data\n  - Examples: Clustering, Dimensionality reduction\n\n- **Reinforcement Learning**: Learning through rewards/penalties\n  - Example: Game playing AI\n\n### 2. **The Learning Process**\n\n```\nData → Training → Model → Predictions → Evaluation\n```\n\n### 3. **Common Algorithms**\n\n| Algorithm | Use Case |\n|-----------|----------|\n| Linear Regression | Predicting continuous values |\n| Decision Trees | Classification tasks |\n| Neural Networks | Complex pattern recognition |\n| K-Means | Clustering data |\n\nMachine learning powers many technologies we use daily, from recommendations to voice recognition."
+            }
+        ]
+    },
+    {
+        "id": "3",
+        "title": "CSS Flexbox layout examples",
+        "timestamp": "2025-12-28T09:15:00.000Z",
+        "messages": [
+            {
+                "id": "3-1",
+                "role": "user",
+                "content": "Show me some CSS flexbox examples"
+            },
+            {
+                "id": "3-2",
+                "role": "assistant",
+                "content": "# CSS Flexbox Examples\n\n## 1. Center Content\n\n```css\n.container {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  height: 100vh;\n}\n```\n\n## 2. Three Column Layout\n\n```css\n.row {\n  display: flex;\n  gap: 20px;\n}\n\n.column {\n  flex: 1;\n}\n```\n\n## 3. Sticky Footer\n\n```css\n.layout {\n  display: flex;\n  flex-direction: column;\n  min-height: 100vh;\n}\n\n.content {\n  flex: 1;\n}\n```\n\n## 4. Responsive Card Grid\n\n```css\n.grid {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem;\n}\n\n.card {\n  flex: 1 1 300px;\n}\n```\n\n## 5. Equal Height Columns\n\n```css\n.container {\n  display: flex;\n}\n\n.column {\n  flex: 1;\n}\n```\n\nFlexbox makes one-dimensional layouts simple and responsive!"
+            }
+        ]
+    },
+    {
+        "id": "4",
+        "title": "Python list comprehension",
+        "timestamp": "2025-12-27T14:20:00.000Z",
+        "messages": [
+            {
+                "id": "4-1",
+                "role": "user",
+                "content": "How do I write list comprehensions in Python?"
+            },
+            {
+                "id": "4-2",
+                "role": "assistant",
+                "content": "# Python List Comprehensions\n\nList comprehensions provide a concise way to create lists in Python.\n\n## Basic Syntax\n\n```python\n[expression for item in iterable]\n```\n\n## Examples\n\n### 1. Basic List Creation\n\n```python\n# Traditional\nsquares = []\nfor x in range(10):\n    squares.append(x**2)\n\n# List comprehension\nsquares = [x**2 for x in range(10)]\n# [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]\n```\n\n### 2. With Condition\n\n```python\neven_numbers = [x for x in range(20) if x % 2 == 0]\n# [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]\n```\n\n### 3. With Else\n\n```python\nnumbers = ['even' if x % 2 == 0 else 'odd' for x in range(5)]\n# ['even', 'odd', 'even', 'odd', 'even']\n```\n\n### 4. Nested Comprehension\n\n```python\nmatrix = [[i * j for j in range(3)] for i in range(3)]\n# [[0, 0, 0], [0, 1, 2], [0, 2, 4]]\n```\n\n### 5. String Manipulation\n\n```python\nwords = ['hello', 'world', 'python']\nuppercase = [word.upper() for word in words]\n# ['HELLO', 'WORLD', 'PYTHON']\n```"
+            }
+        ]
+    },
+    {
+        "id": "5",
+        "title": "SQL joins explained",
+        "timestamp": "2025-12-26T11:00:00.000Z",
+        "messages": [
+            {
+                "id": "5-1",
+                "role": "user",
+                "content": "What are the different types of SQL joins?"
+            },
+            {
+                "id": "5-2",
+                "role": "assistant",
+                "content": "# SQL Joins Explained\n\nJoins are used to combine rows from two or more tables based on related columns.\n\n## Types of Joins\n\n### 1. INNER JOIN\n\nReturns records that have matching values in both tables.\n\n```sql\nSELECT users.name, orders.order_id\nFROM users\nINNER JOIN orders ON users.id = orders.user_id;\n```\n\n### 2. LEFT JOIN\n\nReturns all records from the left table and matching records from the right.\n\n```sql\nSELECT users.name, orders.order_id\nFROM users\nLEFT JOIN orders ON users.id = orders.user_id;\n```\n\n### 3. RIGHT JOIN\n\nReturns all records from the right table and matching records from the left.\n\n```sql\nSELECT users.name, orders.order_id\nFROM users\nRIGHT JOIN orders ON users.id = orders.user_id;\n```\n\n### 4. FULL OUTER JOIN\n\nReturns all records when there's a match in either table.\n\n```sql\nSELECT users.name, orders.order_id\nFROM users\nFULL OUTER JOIN orders ON users.id = orders.user_id;\n```\n\n## Venn Diagram\n\n```\nINNER:     LEFT:       RIGHT:      FULL:\n  🔴         🔴🔵          🟣🔴         🔴🔵\n    🔵                      🟣\n```"
+            }
+        ]
+    },
+    {
+        "id": "6",
+        "title": "Tips for staying productive while working from home",
+        "timestamp": "2025-12-25T16:30:00.000Z",
+        "messages": [
+            {
+                "id": "6-1",
+                "role": "user",
+                "content": "How can I stay productive while working from home?"
+            },
+            {
+                "id": "6-2",
+                "role": "assistant",
+                "content": "# Tips for Staying Productive at Home\n\n## Create a Dedicated Workspace\n\n- Set up a specific area for work\n- Keep it organized and clutter-free\n- Ensure good lighting and comfortable seating\n\n## Maintain a Routine\n\n### Morning Habits\n- Wake up at the same time each day\n- Get dressed (even if casually)\n- Have breakfast and coffee\n\n### Work Structure\n- Start and end work at consistent times\n- Take regular breaks (Pomodoro technique works well)\n- Schedule lunch away from your desk\n\n## Avoid Distractions\n\n> **Key tip**: Put your phone in another room during work hours.\n\n- Use website blockers for social media\n- Communicate boundaries with family/roommates\n- Close unnecessary tabs and apps\n\n## Stay Connected\n\n- Have virtual coffee breaks with colleagues\n- Join team meetings via video\n- Use messaging apps for quick check-ins\n\n## End Your Day\n\n- Shut down your computer completely\n- Transition to evening activities\n- Prepare for the next day\n\nRemember, consistency is key to building habits that work for you!"
+            }
+        ]
+    },
+    {
+        "id": "7",
+        "title": "What to cook for a quick dinner",
+        "timestamp": "2025-12-24T18:45:00.000Z",
+        "messages": [
+            {
+                "id": "7-1",
+                "role": "user",
+                "content": "I need ideas for a quick dinner tonight. Any suggestions?"
+            },
+            {
+                "id": "7-2",
+                "role": "assistant",
+                "content": "# Quick Dinner Ideas (Ready in 20-30 Minutes)\n\n## 1. Pasta with Garlic & Olive Oil\n\n- 2 cloves garlic, minced\n- 3 tbsp olive oil\n- Red pepper flakes\n- Fresh parsley\n- Parmesan cheese\n\n**Directions**: Cook pasta. Sauté garlic in oil, add pasta and toss.\n\n## 2. Fried Rice\n\n- Day-old rice\n- 2 eggs\n- Mixed veggies (peas, carrots, corn)\n- Soy sauce\n- Green onions\n\n**Directions**: Scramble eggs, add veggies and rice, season with soy sauce.\n\n## 3. Grilled Cheese & Tomato Soup\n\n- Bread slices\n- Cheese (cheddar or your favorite)\n- Canned tomato soup\n\n**Directions**: Make sandwich in pan. Heat soup on stove.\n\n## 4. Quesadillas\n\n- Tortillas\n- Cheese\n- Beans, chicken, or peppers (optional)\n- Salsa & sour cream\n\n**Directions**: Fill and fold tortilla, cook on pan until crispy.\n\n## 5. Stir-Fry\n\n- Protein (tofu, chicken, or shrimp)\n- Mixed vegetables\n- Soy sauce, garlic, ginger\n- Rice or noodles\n\n**Directions**: Cook protein first, add vegetables, season, serve over rice.\n\n\n> **Tip**: Prep ingredients on Sunday for faster weekday cooking!"
+            }
+        ]
+    },
+    {
+        "id": "8",
+        "title": "How to reduce daily stress",
+        "timestamp": "2025-12-23T12:00:00.000Z",
+        "messages": [
+            {
+                "id": "8-1",
+                "role": "user",
+                "content": "I've been feeling stressed lately. What can help reduce stress?"
+            },
+            {
+                "id": "8-2",
+                "role": "assistant",
+                "content": "# Ways to Reduce Daily Stress\n\n## Physical Activities\n\n### Exercise\n- Take a 20-minute walk outside\n- Do gentle yoga or stretching\n- Dance to your favorite music\n\n### Body Relaxation\n- Practice deep breathing: 4 counts in, hold 4, out 6\n- Progressive muscle relaxation\n- Take a warm bath with calming scents\n\n## Mental Techniques\n\n### Mindfulness\n- Start with 5 minutes of meditation\n- Focus on the present moment\n- Practice gratitude daily\n\n### Organization\n- Make a to-do list and prioritize\n- Break big tasks into smaller steps\n- Say no to unnecessary commitments\n\n## Lifestyle Changes\n\n| Change | Benefit |\n|--------|---------|\n| Better sleep | Improves mood and energy |\n| Reduce caffeine | Lowers anxiety |\n| Limit screen time | Decreases information overload |\n| Connect with others | Provides emotional support |\n\n## Quick Stress Busters\n\n1. **4-7-8 Breathing**: Breathe in for 4, hold for 7, exhale for 8\n2. **Grounding exercise**: Name 5 things you can see, 4 you can touch, 3 you can hear, 2 you can smell, 1 you can taste\n3. **Listen to nature sounds**: Rain, ocean waves, birds\n\n> Remember: It's okay to ask for help. Consider speaking with a professional if stress becomes overwhelming."
+            }
+        ]
+    },
+    {
+        "id": "9",
+        "title": "Planning a weekend trip",
+        "timestamp": "2025-12-22T09:30:00.000Z",
+        "messages": [
+            {
+                "id": "9-1",
+                "role": "user",
+                "content": "I'm planning a weekend trip. How should I organize my planning?"
+            },
+            {
+                "id": "9-2",
+                "role": "assistant",
+                "content": "# Weekend Trip Planning Guide\n\n## Step 1: Choose Your Destination\n\n### Considerations\n- **Distance**: How far are you willing to travel?\n- **Budget**: Set a realistic spending limit\n- **Interests**: Nature, city, beach, mountains?\n- **Group size**: Solo, couple, family, friends?\n\n## Step 2: Create a Timeline\n\n### 4 Weeks Before\n- Research destinations\n- Book accommodations (hotels, Airbnb)\n- Check if passports/IDs are needed\n\n### 2 Weeks Before\n- Book transportation (flights, train, car rental)\n- Plan activities and tours\n- Make restaurant reservations\n\n### 1 Week Before\n- Pack bags\n- Check weather forecast\n- Confirm all reservations\n- Prepare itinerary\n\n## Step 3: Pack Smart\n\n### Essential Checklist\n- [ ] Clothes (check weather)\n- [ ] Toiletries\n- [ ] Medications\n- [ ] Chargers & power bank\n- [ ] Wallet, cash, cards\n- [ ] Identification\n- [ ] Camera\n- [ ] Snacks\n\n### Pro Tips\n- Pack versatile clothing items\n- Bring a small first-aid kit\n- Download offline maps\n- Bring entertainment for travel\n\n## Step 4: Budget Breakdown\n\n- **Transportation**: 30-40%\n- **Accommodation**: 30-40%\n- **Food**: 15-20%\n- **Activities**: 10-15%\n- **Miscellaneous**: 5-10%\n\n## Step 5: Stay Flexible\n\n> **Important**: Leave room for spontaneity and unexpected discoveries!\n\n- Don't over-schedule every minute\n- Have backup indoor activities\n- Keep some budget for unexpected expenses\n\nEnjoy your adventure! 🌟"
+            }
+        ]
+    },
+    {
+        "id": "10",
+        "title": "Starting a morning routine",
+        "timestamp": "2025-12-21T07:15:00.000Z",
+        "messages": [
+            {
+                "id": "10-1",
+                "role": "user",
+                "content": "I want to create a better morning routine. Any suggestions?"
+            },
+            {
+                "id": "10-2",
+                "role": "assistant",
+                "content": "# Building a Better Morning Routine\n\n## The Night Before\n\n### Preparation Steps\n- Lay out clothes for tomorrow\n- Pack your bag/work items\n- Set phone alarm across the room\n- Write 3 priorities for tomorrow\n\n## Wake Up Strategy\n\n### First 5 Minutes\n1. **Don't hit snooze** - it makes you more tired\n2. **Drink water** - rehydrate after sleep\n3. **Open curtains** - let natural light in\n4. **Move your body** - stretch or take 5 steps\n\n## A Balanced Morning Routine\n\n### Movement (10-15 min)\n- Light stretching\n- Yoga\n- Quick walk\n- Bodyweight exercises\n\n### Mindfulness (5-10 min)\n- Meditation\n- Journaling\n- Reading\n- Gratitude practice\n\n### Nourishment (15 min)\n- Healthy breakfast\n- Coffee or tea (no more than 2 cups)\n- Take time to eat mindfully\n\n## Sample Routines by Time Available\n\n### 15-Minute Version\n```\nWake → Water → Stretch → Shower → Breakfast → Go\n```\n\n### 30-Minute Version\n```\nWake → Water → 10-min exercise → Meditate 5 min → Shower → Breakfast → Go\n```\n\n### 60-Minute Version\n```\nWake → Water → 20-min workout → Shower → Breakfast → Journal/Read 10 min → Go\n```\n\n## Tips for Success\n\n| Do | Don't |\n|----|------|\n| Start with 1-2 habits | Change everything at once |\n| Be consistent | Skip weekends completely |\n| Prepare the night before | Check phone immediately |\n| Celebrate small wins | Give up after a slip |\n\n> **Remember**: The perfect routine is one you actually do. Start small and build gradually!"
+            }
+        ]
+    }
+]
