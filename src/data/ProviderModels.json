@@ -23,7 +23,7 @@
     },
     "zai": {
         "label": "Z.ai (Coding Plan)",
-        "icon": "ri:brain-line",
+        "icon": "mynaui:letter-z-square",
         "models": [
             {
                 "value": "GLM-4.7",
