@@ -20,7 +20,7 @@
                         New Chat
                     </Button>
                 </div>
-                <Separator class="mb-4" />
+                <Separator class="mb-3" />
                 <div class="space-y-4 mb-4">
                     <div>
                         <label
@@ -31,7 +31,8 @@
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
-                                    <SelectItem v-for="(info, provider) in providerModels" :key="provider" :value="provider">
+                                    <SelectItem v-for="(info, provider) in providerModels" :key="provider"
+                                        :value="provider">
                                         <div class="flex items-center gap-2">
                                             <Icon :icon="info.icon" class="h-4 w-4" />
                                             {{ info.label }}
@@ -61,32 +62,37 @@
                     </div>
                 </div>
 
-                <Separator class="my-6" />
+                <Separator class="my-3" />
 
-                <SidebarGroupLabel
-                    class="px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Recent Chats
+                <SidebarGroupLabel class="px-2 text-xs text-muted-foreground mb-3">
+                    Recent Chats
                 </SidebarGroupLabel>
-                <SidebarMenu>
-                    <SidebarMenuItem v-for="chat in chatHistory.sortedChats" :key="chat.id">
-                        <SidebarMenuButton as-child :class="[
-                            'h-11 px-3 rounded-lg hover:bg-primary/50 transition-all duration-200',
-                            chatHistory.currentChatId === chat.id && 'bg-primary/30'
-                        ]">
-                            <a href="#" @click.prevent="chatHistory.selectChat(chat.id)"
-                                class="flex items-center gap-3">
-                                <span class="flex-1 text-sm truncate text-left">{{ chat.title }}</span>
-                                <span class="text-xs text-muted-foreground">{{ formatTimestamp(chat.timestamp) }}</span>
-                            </a>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                </SidebarMenu>
 
-                <!-- Empty state when no chats -->
-                <div v-if="chatHistory.chats.length === 0" class="text-center py-8 px-4">
-                    <Icon icon="lucide:message-square" class="h-12 w-12 mx-auto mb-2 text-muted-foreground/50" />
-                    <p class="text-sm text-muted-foreground">No chats yet</p>
-                    <p class="text-xs text-muted-foreground/70">Start a new conversation</p>
-                </div>
+                <ScrollArea class="h-[calc(90vh-400px)] -mr-2">
+                    <SidebarMenu>
+                        <SidebarMenuItem v-for="chat in chatHistory.sortedChats" :key="chat.id">
+                            <SidebarMenuButton as-child :class="chatHistory.currentChatId === chat.id && 'bg-accent'"
+                                class="h-auto p-2">
+                                <a href="#" @click.prevent="chatHistory.selectChat(chat.id)"
+                                    class="flex flex-1 flex-col items-start gap-0.3 overflow-hidden">
+                                    <span class="w-full truncate text-sm font-medium">{{ chat.title }}</span>
+                                    <span class="text-xs text-muted-foreground">{{ formatTimestamp(chat.timestamp)
+                                    }}</span>
+                                </a>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+
+                    <!-- Empty state -->
+                    <div v-if="chatHistory.chats.length === 0"
+                        class="flex flex-col items-center justify-center py-12 px-4">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-muted mb-4">
+                            <Icon icon="lucide:message-square" class="h-5 w-5 text-muted-foreground" />
+                        </div>
+                        <p class="text-sm text-muted-foreground">No chats yet</p>
+                        <p class="text-xs text-muted-foreground/70 mt-1">Start a conversation to begin</p>
+                    </div>
+                </ScrollArea>
             </SidebarGroup>
         </SidebarContent>
 
@@ -114,6 +120,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { Icon } from '@iconify/vue'
 import { ref, computed, watch, onMounted } from 'vue'
 import type { Provider, ProviderModels } from '@/types'
