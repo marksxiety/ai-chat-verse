@@ -2,6 +2,9 @@ import express from "express";
 import cors from "cors";
 import OpenAI from "openai";
 import dotenv from "dotenv";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
@@ -9,21 +12,37 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+let configProviderData = null;
 
-const zhipu = new OpenAI({
-  apiKey: process.env.ZHIPU_API_KEY,
-  baseURL: "https://api.z.ai/api/coding/paas/v4",
-});
+const loadConfigData = () => {
+  if (!configProviderData) {
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+    const filePath = path.join(__dirname, "../src/data/ProviderModels.json");
+    configProviderData = JSON.parse(fs.readFileSync(filePath, "utf8"));
+  }
+  return configProviderData;
+};
+
+const getClientProvider = (provider) => {
+  const configData = loadConfigData();
+
+  const APIKEY = `${provider.toUpperCase()}_API_KEY`;
+  const URL = configData[provider]?.baseUrl;
+
+  return new OpenAI({
+    apiKey: process.env[APIKEY],
+    baseURL: URL,
+  });
+};
 
 app.post("/api/chat/openai", async (req, res) => {
   try {
+    const client = getClientProvider("openai");
+
     const { messages, model } = req.body;
 
-    const result = await openai.chat.completions.create({
-      model: model || "gpt-4o-mini",
+    const result = await client.chat.completions.create({
+      model: model,
       messages,
       stream: true,
     });
@@ -48,6 +67,8 @@ app.post("/api/chat/openai", async (req, res) => {
 
 app.post("/api/chat/zhipu", async (req, res) => {
   try {
+    const client = getClientProvider("openai");
+
     const { messages, model } = req.body;
 
     const systemInstruction = {
@@ -58,8 +79,8 @@ app.post("/api/chat/zhipu", async (req, res) => {
 
     const finalMessages = [systemInstruction, ...messages];
 
-    const result = await zhipu.chat.completions.create({
-      model: model || "GLM-4.7",
+    const result = await client.chat.completions.create({
+      model: model,
       messages: finalMessages,
       stream: true,
     });
