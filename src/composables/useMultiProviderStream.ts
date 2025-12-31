@@ -5,6 +5,7 @@ export function useMultiProviderStream() {
     const modelProvider = useModelProviderStore()
     const isStreaming = ref(false)
     const streamedContent = ref('')
+    const apiSuccess = ref(false)
 
     async function streamMessage(messages: any[], onChunk: (chunk: string) => void) {
         isStreaming.value = true
@@ -24,6 +25,7 @@ export function useMultiProviderStream() {
     }
 
     async function streamOpenAI(messages: any[], onChunk: (chunk: string) => void) {
+        apiSuccess.value = false
         try {
             const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT || 3001}/api/chat/openai`, {
                 method: 'POST',
@@ -34,6 +36,11 @@ export function useMultiProviderStream() {
                 })
             });
 
+            if (!response.ok) {
+                const errorText = await response.text()
+                throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`)
+            }
+
             const reader = response.body?.getReader();
             const decoder = new TextDecoder();
 
@@ -59,9 +66,10 @@ export function useMultiProviderStream() {
                     }
                 }
             }
-
+            apiSuccess.value = true
             return { success: true };
         } catch (error) {
+            apiSuccess.value = false
             return {
                 success: false,
                 data: error || "Unidentified Error Occured",
@@ -70,6 +78,7 @@ export function useMultiProviderStream() {
     }
 
     async function streamZhipu(messages: any[], onChunk: (chunk: string) => void) {
+        apiSuccess.value = false
         try {
             const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT || 3001}/api/chat/zhipu`, {
                 method: 'POST',
@@ -80,6 +89,11 @@ export function useMultiProviderStream() {
                 })
             });
 
+            if (!response.ok) {
+                const errorText = await response.text()
+                throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`)
+            }
+
             const reader = response.body?.getReader();
             const decoder = new TextDecoder();
 
@@ -105,9 +119,10 @@ export function useMultiProviderStream() {
                     }
                 }
             }
-
+            apiSuccess.value = true
             return { success: true };
         } catch (error) {
+            apiSuccess.value = false
             return { success: false, data: error };
         }
     }
@@ -115,6 +130,7 @@ export function useMultiProviderStream() {
     return {
         isStreaming,
         streamedContent,
+        apiSuccess,
         streamMessage
     }
 }
