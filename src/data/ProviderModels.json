@@ -2,6 +2,7 @@
     "openai": {
         "label": "OpenAI",
         "icon": "simple-icons:openai",
+        "baseUrl": "https://api.openai.com/v1",
         "models": [
             {
                 "value": "gpt-4o-mini",
@@ -24,6 +25,7 @@
     "zai": {
         "label": "Z.ai (Coding Plan)",
         "icon": "mynaui:letter-z-square",
+        "baseUrl": "https://api.z.ai/api/coding/paas/v4",
         "models": [
             {
                 "value": "GLM-4.7",
