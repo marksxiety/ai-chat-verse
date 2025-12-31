@@ -5,15 +5,24 @@
                 <div ref="scrollContainer" class="mx-auto max-w-3xl space-y-6 p-6 pb-0">
                     <ChatMessage />
                     <div v-if="chatHistory.isLoading" class="flex gap-4 animate-fade-in flex-row">
-                        <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-chat-ai-border bg-chat-ai-bg text-chat-ai-fg">
+                        <div
+                            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-chat-ai-border bg-chat-ai-bg text-chat-ai-fg">
                             <Icon icon="mdi:robot" class="h-5 w-5" />
                         </div>
-                        <div class="max-w-[75%] rounded-2xl px-4 py-3 border border-chat-ai-border bg-chat-ai-bg text-chat-ai-fg rounded-tl-sm">
+                        <div
+                            class="max-w-[75%] rounded-2xl px-4 py-3 border border-chat-ai-border bg-chat-ai-bg text-chat-ai-fg rounded-tl-sm">
                             <div class="flex items-center gap-1.5 py-1">
                                 <span class="h-2 w-2 rounded-full bg-current animate-pulse-dot" />
                                 <span class="h-2 w-2 rounded-full bg-current animate-pulse-dot-delay-1" />
                                 <span class="h-2 w-2 rounded-full bg-current animate-pulse-dot-delay-2" />
                             </div>
+                        </div>
+                    </div>
+                    <div v-if="chatHistory.apiSuccess === false && !chatHistory.isLoading" class="flex justify-end">
+                        <div
+                            class="flex items-center gap-2 px-3 py-1 rounded-full text-xs bg-red-500/10 text-red-500 border border-red-500/20">
+                            <Icon icon="mdi:alert-circle" class="h-3 w-3" />
+                            <span>Request Failed.</span>
                         </div>
                     </div>
                 </div>
