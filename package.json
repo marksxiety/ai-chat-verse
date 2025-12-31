@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:server": "node server.js",
+    "dev:server": "node server/server.js",
     "dev:all": "concurrently \"npm run dev\" \"npm run dev:server\"",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
