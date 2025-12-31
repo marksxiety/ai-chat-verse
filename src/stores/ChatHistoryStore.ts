@@ -20,6 +20,7 @@ export const useChatHistoryStore = defineStore('chatHistory', () => {
     const chats = ref<Chat[]>([])
     const currentChatId = ref<string | null>(null)
     const isLoading = ref(false)
+    const apiSuccess = ref<boolean | null>(null)
 
     // Computed
     const currentChat = computed(() => {
@@ -109,45 +110,54 @@ export const useChatHistoryStore = defineStore('chatHistory', () => {
         }
 
         isLoading.value = true
+        apiSuccess.value = null
         addMessage('user', userMessage)
 
-        const { streamMessage } = useMultiProviderStream()
+        const { streamMessage, apiSuccess: streamApiSuccess } = useMultiProviderStream()
 
         const messages = currentMessages.value.map(msg => ({
             role: msg.role,
             content: msg.content
         }))
 
-        // Don't add empty message - create it when first chunk arrives
         let assistantMessageId: string | null = null
 
-        await streamMessage(messages, (chunk: string) => {
-            if (!assistantMessageId) {
-                // First chunk - create the message
-                addMessage('assistant', chunk)
-                const lastMessage = currentChat.value?.messages[currentChat.value.messages.length - 1]
-                if (lastMessage) {
-                    assistantMessageId = lastMessage.id
+        try {
+            await streamMessage(messages, (chunk: string) => {
+                if (!assistantMessageId) {
+                    addMessage('assistant', chunk)
+                    const lastMessage = currentChat.value?.messages[currentChat.value.messages.length - 1]
+                    if (lastMessage) {
+                        assistantMessageId = lastMessage.id
+                        isLoading.value = false
+                    }
+
                     isLoading.value = false
+                } else {
+                    const messageToUpdate = currentChat.value?.messages.find(m => m.id === assistantMessageId)
+                    if (messageToUpdate) {
+                        messageToUpdate.content += chunk
+                    }
                 }
+            })
 
-                isLoading.value = false
-            } else {
-                // Subsequent chunks - append to existing message
-                const messageToUpdate = currentChat.value?.messages.find(m => m.id === assistantMessageId)
-                if (messageToUpdate) {
-                    messageToUpdate.content += chunk
-                }
-            }
-        })
-
-
+            apiSuccess.value = streamApiSuccess.value
+            return [true, '']
+        } catch (error) {
+            isLoading.value = false
+            apiSuccess.value = false
+            return [false, `Request failed:  ${error}`]
+        } finally {
+            isLoading.value = false
+            return [false, '']
+        }
     }
     return {
         // State
         chats,
         currentChatId,
         isLoading,
+        apiSuccess,
 
         // Computed
         currentChat,
