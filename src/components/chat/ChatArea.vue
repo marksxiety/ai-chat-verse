@@ -22,7 +22,7 @@
                         <div
                             class="flex items-center gap-2 px-3 py-1 rounded-full text-xs bg-red-500/10 text-red-500 border border-red-500/20">
                             <Icon icon="mdi:alert-circle" class="h-3 w-3" />
-                            <span>Request Failed.</span>
+                            <span>Something went wrong. Please try again.</span>
                         </div>
                     </div>
                 </div>
