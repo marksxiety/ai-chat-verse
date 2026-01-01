@@ -5,27 +5,28 @@ export function useMultiProviderStream() {
     const modelProvider = useModelProviderStore()
     const isStreaming = ref(false)
     const streamedContent = ref('')
-    const apiSuccess = ref(false)
 
     async function streamMessage(messages: any[], onChunk: (chunk: string) => void) {
         isStreaming.value = true
         streamedContent.value = ''
 
         const provider = modelProvider.getProviderValue
+        let result
 
         switch (provider) {
             case 'openai':
-                await streamOpenAI(messages, onChunk)
+                result = await streamOpenAI(messages, onChunk)
                 break
             case 'zai':
-                await streamZhipu(messages, onChunk)
+                result = await streamZhipu(messages, onChunk)
+                break
         }
 
         isStreaming.value = false
+        return result
     }
 
     async function streamOpenAI(messages: any[], onChunk: (chunk: string) => void) {
-        apiSuccess.value = false
         try {
             const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT || 3001}/api/chat/openai`, {
                 method: 'POST',
@@ -66,10 +67,8 @@ export function useMultiProviderStream() {
                     }
                 }
             }
-            apiSuccess.value = true
             return { success: true };
         } catch (error) {
-            apiSuccess.value = false
             return {
                 success: false,
                 data: error || "Unidentified Error Occured",
@@ -78,7 +77,6 @@ export function useMultiProviderStream() {
     }
 
     async function streamZhipu(messages: any[], onChunk: (chunk: string) => void) {
-        apiSuccess.value = false
         try {
             const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT || 3001}/api/chat/zhipu`, {
                 method: 'POST',
@@ -119,10 +117,8 @@ export function useMultiProviderStream() {
                     }
                 }
             }
-            apiSuccess.value = true
             return { success: true };
         } catch (error) {
-            apiSuccess.value = false
             return { success: false, data: error };
         }
     }
@@ -130,7 +126,6 @@ export function useMultiProviderStream() {
     return {
         isStreaming,
         streamedContent,
-        apiSuccess,
         streamMessage
     }
 }

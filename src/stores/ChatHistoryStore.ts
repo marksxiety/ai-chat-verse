@@ -113,7 +113,7 @@ export const useChatHistoryStore = defineStore('chatHistory', () => {
         apiSuccess.value = null
         addMessage('user', userMessage)
 
-        const { streamMessage, apiSuccess: streamApiSuccess } = useMultiProviderStream()
+        const { streamMessage } = useMultiProviderStream()
 
         const messages = currentMessages.value.map(msg => ({
             role: msg.role,
@@ -123,7 +123,7 @@ export const useChatHistoryStore = defineStore('chatHistory', () => {
         let assistantMessageId: string | null = null
 
         try {
-            await streamMessage(messages, (chunk: string) => {
+            const result = await streamMessage(messages, (chunk: string) => {
                 if (!assistantMessageId) {
                     addMessage('assistant', chunk)
                     const lastMessage = currentChat.value?.messages[currentChat.value.messages.length - 1]
@@ -141,8 +141,8 @@ export const useChatHistoryStore = defineStore('chatHistory', () => {
                 }
             })
 
-            apiSuccess.value = streamApiSuccess.value
-            return [true, '']
+            apiSuccess.value = result?.success ?? false
+            return [result?.success ?? false, '']
         } catch (error) {
             isLoading.value = false
             apiSuccess.value = false
