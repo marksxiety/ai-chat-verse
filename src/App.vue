@@ -1,4 +1,5 @@
 <template>
+  <Toaster position="top-right" />
   <SidebarProvider>
     <AppSidebar />
 
@@ -22,6 +23,7 @@ import ChatArea from '@/components/chat/ChatArea.vue'
 import ChatInput from '@/components/chat/ChatInput.vue'
 import { useChatHistoryStore } from './stores/ChatHistoryStore'
 import { computed } from 'vue'
+import { Toaster } from '@/components/ui/sonner'
 
 const chatHistory = useChatHistoryStore()
 
