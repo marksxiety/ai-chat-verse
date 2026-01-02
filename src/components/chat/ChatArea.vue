@@ -20,7 +20,7 @@
                     </div>
                     <div v-if="chatHistory.apiSuccess === false && !chatHistory.isLoading" class="flex justify-end">
                         <div
-                            class="flex items-center gap-2 px-3 py-1 rounded-full text-xs bg-red-500/10 text-red-500 border border-red-500/20">
+                            class="flex items-center gap-2 px-3 py-1 rounded-full text-xs bg-destructive/10 text-destructive border border-destructive/20">
                             <Icon icon="mdi:alert-circle" class="h-3 w-3" />
                             <span>Something went wrong. Please try again.</span>
                         </div>
@@ -37,8 +37,10 @@ import ChatMessage from "./ChatMessage.vue"
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Icon } from "@iconify/vue"
 import { useChatHistoryStore } from '@/stores/ChatHistoryStore'
+import { useToastStore } from '@/stores/ToastStore'
 
 const chatHistory = useChatHistoryStore()
+const Toast = useToastStore()
 const scrollContainer = ref<HTMLElement | null>(null)
 
 const scrollToBottom = () => {
@@ -54,6 +56,12 @@ watch(() => chatHistory.currentMessages, () => {
 watch(() => chatHistory.isLoading, (isLoading) => {
     if (!isLoading) {
         nextTick(() => scrollToBottom())
+    }
+})
+
+watch(() => (chatHistory.apiSuccess), (apiSuccess) => {
+    if (apiSuccess === false) {
+        Toast.error('Error', 'Something went wrong')
     }
 })
 </script>
