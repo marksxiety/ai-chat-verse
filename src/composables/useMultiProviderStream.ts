@@ -11,168 +11,62 @@ export function useMultiProviderStream() {
         streamedContent.value = ''
 
         const provider = modelProvider.getProviderValue
-        let result
+        const model = modelProvider.getModelValue
 
-        switch (provider) {
-            case 'openai':
-                result = await streamOpenAI(messages, onChunk)
-                break
-            case 'zai':
-                result = await streamZhipu(messages, onChunk)
-                break
-            case 'deepseek':
-                result = await streamDeepSeek(messages, onChunk)
-                break
-        }
-
-        isStreaming.value = false
-        return result
-    }
-
-    async function streamOpenAI(messages: any[], onChunk: (chunk: string) => void) {
         try {
-            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT || 3001}/api/chat/openai`, {
+            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT || 3001}/api/chat`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    messages,
-                    model: modelProvider.getModelValue || 'gpt-4o-mini'
+                    provider,
+                    model,
+                    messages
                 })
-            });
+            })
 
             if (!response.ok) {
                 const errorText = await response.text()
                 throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`)
             }
 
-            const reader = response.body?.getReader();
-            const decoder = new TextDecoder();
+            const reader = response.body?.getReader()
+            const decoder = new TextDecoder()
+            if (!reader) throw new Error('ReadableStream not supported or no reader found.')
 
-            if (!reader) throw new Error('No reader');
-
+            // Main streaming loop
             while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
+                const { done, value } = await reader.read()
+                if (done) break
 
-                const chunk = decoder.decode(value);
-                const lines = chunk.split('\n').filter(line => line.trim());
+                const chunk = decoder.decode(value)
+                // Split by double newlines to catch individual "data: " lines from the SSE stream
+                const lines = chunk.split('\n').filter(line => line.trim())
 
                 for (const line of lines) {
-                    if (line === 'data: [DONE]') continue;
+                    if (line === 'data: [DONE]') continue
                     if (line.startsWith('data: ')) {
                         try {
-                            const json = JSON.parse(line.slice(6));
+                            const json = JSON.parse(line.slice(6))
                             if (json.content) {
-                                streamedContent.value += json.content;
-                                onChunk(json.content);
+                                streamedContent.value += json.content
+                                onChunk(json.content)
                             }
-                        } catch (e) { }
+                        } catch (e) {
+                            continue
+                        }
                     }
                 }
             }
-            return { success: true };
+
+            return { success: true }
         } catch (error) {
+            console.error("Streaming Error:", error)
             return {
                 success: false,
-                data: error || "Unidentified Error Occured",
-            };
-        }
-    }
-
-    async function streamZhipu(messages: any[], onChunk: (chunk: string) => void) {
-        try {
-            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT || 3001}/api/chat/zhipu`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    messages,
-                    model: modelProvider.getModelValue || 'GLM-4.7'
-                })
-            });
-
-            if (!response.ok) {
-                const errorText = await response.text()
-                throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`)
+                data: error instanceof Error ? error.message : "An unidentified error occurred",
             }
-
-            const reader = response.body?.getReader();
-            const decoder = new TextDecoder();
-
-            if (!reader) throw new Error('No reader');
-
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-
-                const chunk = decoder.decode(value);
-                const lines = chunk.split('\n').filter(line => line.trim());
-
-                for (const line of lines) {
-                    if (line === 'data: [DONE]') continue;
-                    if (line.startsWith('data: ')) {
-                        try {
-                            const json = JSON.parse(line.slice(6));
-                            if (json.content) {
-                                streamedContent.value += json.content;
-                                onChunk(json.content);
-                            }
-                        } catch (e) { }
-                    }
-                }
-            }
-            return { success: true };
-        } catch (error) {
-            return { success: false, data: error };
-        }
-    }
-
-    async function streamDeepSeek(messages: any[], onChunk: (chunk: string) => void) {
-        try {
-            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT || 3001}/api/chat/deepseek`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    messages,
-                    model: modelProvider.getModelValue || 'gpt-4o-mini'
-                })
-            });
-
-            if (!response.ok) {
-                const errorText = await response.text()
-                throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`)
-            }
-
-            const reader = response.body?.getReader();
-            const decoder = new TextDecoder();
-
-            if (!reader) throw new Error('No reader');
-
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-
-                const chunk = decoder.decode(value);
-                const lines = chunk.split('\n').filter(line => line.trim());
-
-                for (const line of lines) {
-                    if (line === 'data: [DONE]') continue;
-                    if (line.startsWith('data: ')) {
-                        try {
-                            const json = JSON.parse(line.slice(6));
-                            if (json.content) {
-                                streamedContent.value += json.content;
-                                onChunk(json.content);
-                            }
-                        } catch (e) { }
-                    }
-                }
-            }
-            return { success: true };
-        } catch (error) {
-            return {
-                success: false,
-                data: error || "Unidentified Error Occured",
-            };
+        } finally {
+            isStreaming.value = false
         }
     }
 
