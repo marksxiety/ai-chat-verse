@@ -23,17 +23,32 @@
         ]
     },
     "zai": {
-        "label": "Z.ai (Coding Plan)",
+        "label": "Z.AI",
         "icon": "mynaui:letter-z-square",
-        "baseUrl": "https://api.z.ai/api/coding/paas/v4",
+        "baseUrl": "https://api.z.ai/api/paas/v4",
         "models": [
             {
-                "value": "GLM-4.7",
-                "label": "GLM-4.7 (Coding)"
+                "value": "glm-4.7",
+                "label": "GLM-4.7"
             },
             {
-                "value": "GLM-4.5-Air",
-                "label": "GLM-4.5 Air"
+                "value": "glm-4.6",
+                "label": "GLM-4.6"
+            }
+        ]
+    },
+    "deepseek": {
+        "label": "DeepSeek",
+        "icon": "hugeicons:deepseek",
+        "baseUrl": "https://api.deepseek.com",
+        "models": [
+            {
+                "value": "deepseek-chat",
+                "label": "DeepSeek-V3.2 (General/Chat)"
+            },
+            {
+                "value": "deepseek-reasoner",
+                "label": "DeepSeek-V3.2 (Thinking/R1)"
             }
         ]
     }
