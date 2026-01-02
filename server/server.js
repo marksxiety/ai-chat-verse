@@ -103,6 +103,36 @@ app.post("/api/chat/zhipu", async (req, res) => {
   }
 });
 
+app.post("/api/chat/deepseek", async (req, res) => {
+  try {
+    const client = getClientProvider("deepseek");
+
+    const { messages, model } = req.body;
+
+    const result = await client.chat.completions.create({
+      model: model,
+      messages,
+      stream: true,
+    });
+
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+
+    for await (const chunk of result) {
+      const delta = chunk.choices?.[0]?.delta?.content;
+      if (delta) {
+        res.write(`data: ${JSON.stringify({ content: delta })}\n\n`);
+      }
+    }
+
+    res.write("data: [DONE]\n\n");
+    res.end();
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
