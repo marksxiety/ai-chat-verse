@@ -8,7 +8,7 @@
         <SidebarTrigger />
         <span class="text-sm font-semibold">{{ currentTitle }}</span>
       </header>
-      <main class="flex-1 h-full">
+      <main class="flex-1 h-full flex flex-col min-h-0">
         <ChatArea />
         <ChatInput />
       </main>

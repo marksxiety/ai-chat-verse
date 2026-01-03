@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-background p-4">
+    <div class="bg-background border-t p-4 shrink-0">
         <PromptTemplate v-model:open="showDialog" @select-template="handleSelect" />
         <div class="mx-auto max-w-3xl">
             <div class="mb-2 flex items-center justify-center">
@@ -8,7 +8,7 @@
                 </Badge>
             </div>
             <div
-                class="relative flex items-end gap-2 rounded-xl border border-input bg-card p-2 shadow-sm transition-shadow focus-within:shadow-md focus-within:ring-1 focus-within:ring-ring">
+                class="relative flex items-end gap-2 rounded-xl border border-input bg-card p-2 shadow-sm transition-shadow focus-within:shadow-md focus-within:ring-1 focus-within:ring-ring max-h-62.5">
                 <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger as-child>
