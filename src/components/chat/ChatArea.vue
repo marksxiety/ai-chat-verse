@@ -1,5 +1,5 @@
 <template>
-    <div class="flex-1 flex flex-col items-center h-full min-h-0 max-h-[75vh] p-6">
+    <div class="flex-1 flex flex-col items-center h-full min-h-0 p-6">
         <div class="w-full min-w-72 max-w-5xl flex-1 flex flex-col h-full min-h-0">
             <ScrollArea class="flex-1 w-full h-full min-h-0">
                 <div ref="scrollContainer" class="mx-auto max-w-3xl space-y-6 p-6 pb-0">
@@ -45,7 +45,10 @@ const scrollContainer = ref<HTMLElement | null>(null)
 
 const scrollToBottom = () => {
     if (scrollContainer.value) {
-        scrollContainer.value.scrollIntoView({ behavior: 'smooth', block: 'end' })
+        const viewport = scrollContainer.value.closest('[data-slot="scroll-area-viewport"]')
+        if (viewport) {
+            viewport.scrollTop = viewport.scrollHeight
+        }
     }
 }
 
