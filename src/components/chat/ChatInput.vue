@@ -1,5 +1,6 @@
 <template>
     <div class="bg-background p-4">
+        <PromptTemplate v-model:open="showDialog" @select-template="handleSelect" />
         <div class="mx-auto max-w-3xl">
             <div class="mb-2 flex items-center justify-center">
                 <Badge variant="secondary" class="text-xs font-normal">
@@ -8,6 +9,18 @@
             </div>
             <div
                 class="relative flex items-end gap-2 rounded-xl border border-input bg-card p-2 shadow-sm transition-shadow focus-within:shadow-md focus-within:ring-1 focus-within:ring-ring">
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger as-child>
+                            <Button variant="outline" class="h-10 w-10 shrink-0 border-none" @click="showDialog = true">
+                                <Icon icon="octicon:stack-24" class="h-4 w-4" />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Prompt Templates</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
                 <textarea v-model="input" ref="textareaRef" placeholder="Type your message..." @keydown="handleKeyDown"
                     class="min-h-11 max-h-50 flex-1 resize-none border-0 bg-transparent p-2 text-sm outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                     rows="1">
@@ -31,6 +44,9 @@ import { Icon } from "@iconify/vue"
 import { useModelProviderStore } from '@/stores/ModelProviderStore'
 import { useChatHistoryStore } from '@/stores/ChatHistoryStore'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import PromptTemplate from "../PromptTemplate.vue"
 
 const modelProvider = useModelProviderStore()
 const chatHistory = useChatHistoryStore()
@@ -41,6 +57,7 @@ const isLoading = computed(() => chatHistory.isLoading)
 
 const input = ref("")
 const textareaRef = ref<HTMLTextAreaElement | null>(null)
+const showDialog = ref<boolean>(false)
 
 watch(input, async () => {
     await nextTick()
@@ -64,5 +81,9 @@ async function handleSubmit() {
     const message = input.value
     input.value = ""
     await chatHistory.sendMessage(message)
+}
+
+function handleSelect(prompt: string) {
+    input.value = prompt
 }
 </script>
