@@ -1,9 +1,9 @@
 <template>
     <Sidebar>
         <SidebarHeader class="p-4">
-            <div class="flex items-center gap-4">
-                <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-secondary">
-                    <Icon icon="ri:chat-ai-line" width="24" height="24" />
+            <div class="flex items-center gap-6">
+                <div class="flex items-center justify-center">
+                    <img :src="AIChatVerseIcon" alt="ai-chat-verse-logo" class="h-12 w-12">
                 </div>
                 <div>
                     <h1 class="text-sm tracking-wider font-semibold uppercase">AI Chat Verse</h1>
@@ -128,6 +128,7 @@ import { useModelProviderStore } from '@/stores/ModelProviderStore'
 import { useChatHistoryStore } from '@/stores/ChatHistoryStore'
 import chatHistoryData from '@/data/chatHistory.json'
 import ProviderModelsData from '@/data/ProviderModels.json'
+import AIChatVerseIcon from '../../public/ai-chat-verse-logo.png'
 
 const modelProvider = useModelProviderStore()
 const chatHistory = useChatHistoryStore()
