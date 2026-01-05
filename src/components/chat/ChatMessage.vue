@@ -28,14 +28,22 @@
                         ? 'border bg-chat-user-bg text-chat-user-fg rounded-tr-sm'
                         : 'border border-chat-ai-border bg-chat-ai-bg text-chat-ai-fg rounded-tl-sm'
                 ]">
-                    <div v-if="chatHistory.isLoading && message.role === 'assistant' && message.content === '' && index === chatHistory.currentMessages.length - 1"
-                        class="flex items-center gap-1.5 py-1">
+                    <MarkdownRenderer v-if="message.role === 'assistant'" :content="message.content" />
+                    <p v-else class="text-sm leading-relaxed whitespace-pre-wrap">{{ message.content }}</p>
+                </div>
+            </div>
+            <div v-if="chatHistory.isLoading" class="flex gap-4 animate-fade-in flex-row">
+                <div
+                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-chat-ai-border bg-chat-ai-bg text-chat-ai-fg">
+                    <Icon icon="mdi:robot" class="h-5 w-5" />
+                </div>
+                <div
+                    class="max-w-[75%] rounded-2xl px-4 py-3 border border-chat-ai-border bg-chat-ai-bg text-chat-ai-fg rounded-tl-sm">
+                    <div class="flex items-center gap-1.5 py-1">
                         <span class="h-2 w-2 rounded-full bg-current animate-pulse-dot" />
                         <span class="h-2 w-2 rounded-full bg-current animate-pulse-dot-delay-1" />
                         <span class="h-2 w-2 rounded-full bg-current animate-pulse-dot-delay-2" />
                     </div>
-                    <MarkdownRenderer v-if="message.role === 'assistant'" :content="message.content" />
-                    <p v-else class="text-sm leading-relaxed whitespace-pre-wrap">{{ message.content }}</p>
                 </div>
             </div>
         </div>
