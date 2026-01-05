@@ -91,6 +91,7 @@ const renderedMarkdown = computed(() => {
 :deep(pre code) {
     background-color: transparent;
     padding: 0;
+    color: #0c0c0c;
 }
 
 :deep(a) {
