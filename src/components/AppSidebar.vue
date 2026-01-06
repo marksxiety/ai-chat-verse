@@ -1,4 +1,5 @@
 <template>
+    <AppInfo v-model:open="showInforDialog" />
     <Sidebar>
         <SidebarHeader class="p-4">
             <div class="flex items-center gap-6">
@@ -77,7 +78,7 @@
                                     class="flex flex-1 flex-col items-start gap-0.3 overflow-hidden">
                                     <span class="w-full truncate text-sm font-medium">{{ chat.title }}</span>
                                     <span class="text-xs text-muted-foreground">{{ formatTimestamp(chat.timestamp)
-                                    }}</span>
+                                        }}</span>
                                 </a>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
@@ -96,10 +97,13 @@
             </SidebarGroup>
         </SidebarContent>
 
-        <SidebarFooter class="p-4 border-t border-border/50 bg-muted/20">
-            <div class="text-xs text-muted-foreground flex items-center gap-2">
-                <Icon icon="lucide:info" class="h-3 w-3" />
-                <span>v1.0.0</span>
+        <SidebarFooter class="p-4 border-t">
+            <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors"
+                    @click="showInforDialog = true">
+                    <Icon icon="lucide:info" class="h-6 w-6 text-muted-foreground" />
+                    <span class="text-sm text-muted-foreground">v.1.0.2</span>
+                </div>
             </div>
         </SidebarFooter>
     </Sidebar>
@@ -129,6 +133,7 @@ import { useChatHistoryStore } from '@/stores/ChatHistoryStore'
 import chatHistoryData from '@/data/chatHistory.json'
 import ProviderModelsData from '@/data/ProviderModels.json'
 import AIChatVerseIcon from '../../public/ai-chat-verse-logo.png'
+import AppInfo from '@/components/AppInfo.vue'
 
 const modelProvider = useModelProviderStore()
 const chatHistory = useChatHistoryStore()
@@ -137,6 +142,7 @@ const selectedProvider = ref<Provider>('openai')
 const selectedModel = ref<string>('gpt-4o-mini')
 
 const providerModels: ProviderModels = ProviderModelsData ?? {}
+const showInforDialog = ref<boolean>(false)
 
 const getModelLabel = (modelValue: string) => {
     for (const provider in providerModels) {
