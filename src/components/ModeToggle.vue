@@ -30,9 +30,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 function selectedTheme(theme: string) {
     if (theme === 'light') {
-        return 'radix-icons:sun'
-    } else if (theme === 'dark') {
         return 'radix-icons:moon'
+    } else if (theme === 'dark') {
+        return 'radix-icons:sun'
     } else {
         return 'material-symbols-light:computer-outline'
     }
