@@ -1,6 +1,6 @@
 <template>
     <Dialog :open="open" @update:open="(val) => emit('update:open', val)">
-        <DialogContent class="sm:max-w-lg p-0">
+        <DialogContent class="sm:max-w-lg p-4">
             <DialogHeader class="px-6 pt-6 pb-2 space-y-2">
                 <DialogTitle class="text-2xl font-bold flex items-center gap-3">
                     <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-primary/10">
@@ -13,7 +13,7 @@
                 </DialogDescription>
             </DialogHeader>
 
-            <ScrollArea class="max-h-[60vh] px-6">
+            <ScrollArea class="max-h-[60vh] p-4">
                 <div class="space-y-6 py-4">
                     <section>
                         <h3 class="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">

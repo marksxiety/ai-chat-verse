@@ -69,7 +69,7 @@
                     Recent Chats
                 </SidebarGroupLabel>
 
-                <ScrollArea class="h-[calc(90vh-400px)] -mr-2">
+                <ScrollArea class="h-[calc(90vh-400px)] pr-4">
                     <SidebarMenu>
                         <SidebarMenuItem v-for="chat in chatHistory.sortedChats" :key="chat.id">
                             <SidebarMenuButton as-child :class="chatHistory.currentChatId === chat.id && 'bg-accent'"
