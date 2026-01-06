@@ -6,7 +6,7 @@
 import { computed } from 'vue'
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
-import 'highlight.js/styles/github-dark.css'
+import 'highlight.js/styles/github.css'
 
 const md: MarkdownIt = new MarkdownIt({
     html: true,
@@ -91,7 +91,41 @@ const renderedMarkdown = computed(() => {
 :deep(pre code) {
     background-color: transparent;
     padding: 0;
-    color: #0c0c0c;
+    color: var(--foreground);
+}
+
+:deep(.hljs) {
+    background-color: var(--muted);
+    color: var(--foreground);
+}
+
+html.dark :deep(.hljs) {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+}
+
+html.dark :deep(.hljs-keyword) {
+    color: #569cd6;
+}
+
+html.dark :deep(.hljs-string) {
+    color: #ce9178;
+}
+
+html.dark :deep(.hljs-comment) {
+    color: #6a9955;
+}
+
+html.dark :deep(.hljs-function) {
+    color: #dcdcaa;
+}
+
+html.dark :deep(.hljs-number) {
+    color: #b5cea8;
+}
+
+html.dark :deep(.hljs-variable) {
+    color: #9cdcfe;
 }
 
 :deep(a) {
