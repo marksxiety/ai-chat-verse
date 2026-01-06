@@ -11,22 +11,17 @@
             </p>
         </div>
         <div v-else class="space-y-6 animate-fade-in">
-            <div v-for="(message, index) in chatHistory.currentMessages" :key="message.id"
+            <div v-for="message in chatHistory.currentMessages" :key="message.id"
                 :class="['flex gap-4 animate-fade-in', message.role === 'user' ? 'flex-row-reverse' : 'flex-row']">
-                <div :class="[
-                    'flex h-9 w-9 shrink-0 items-center justify-center rounded-full',
-                    message.role === 'user'
-                        ? 'border bg-chat-user-bg text-chat-user-fg'
-                        : 'border border-chat-ai-border bg-chat-ai-bg text-chat-ai-fg'
-                ]">
+                <div class='flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground'>
                     <Icon :icon="message.role === 'user' ? 'mdi:account' : 'mdi:robot'" class="h-5 w-5" />
                 </div>
 
                 <div :class="[
                     'max-w-[75%] rounded-2xl px-4 py-3',
                     message.role === 'user'
-                        ? 'border bg-chat-user-bg text-chat-user-fg rounded-tr-sm'
-                        : 'border border-chat-ai-border bg-chat-ai-bg text-chat-ai-fg rounded-tl-sm'
+                        ? 'border bg-primary text-primary-foreground rounded-tr-sm'
+                        : 'border border-border bg-muted text-muted-foreground rounded-tl-sm'
                 ]">
                     <MarkdownRenderer v-if="message.role === 'assistant'" :content="message.content" />
                     <p v-else class="text-sm leading-relaxed whitespace-pre-wrap">{{ message.content }}</p>
@@ -34,11 +29,11 @@
             </div>
             <div v-if="chatHistory.isLoading" class="flex gap-4 animate-fade-in flex-row">
                 <div
-                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-chat-ai-border bg-chat-ai-bg text-chat-ai-fg">
+                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground">
                     <Icon icon="mdi:robot" class="h-5 w-5" />
                 </div>
                 <div
-                    class="max-w-[75%] rounded-2xl px-4 py-3 border border-chat-ai-border bg-chat-ai-bg text-chat-ai-fg rounded-tl-sm">
+                    class="max-w-[75%] rounded-2xl px-4 py-3 border border-border bg-muted text-muted-foreground rounded-tl-sm">
                     <div class="flex items-center gap-1.5 py-1">
                         <span class="h-2 w-2 rounded-full bg-current animate-pulse-dot" />
                         <span class="h-2 w-2 rounded-full bg-current animate-pulse-dot-delay-1" />
