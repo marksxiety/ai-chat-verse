@@ -46,7 +46,7 @@ import { useChatHistoryStore } from '@/stores/ChatHistoryStore'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import PromptTemplate from "../PromptTemplate.vue"
+import PromptTemplate from "@/components/PromptTemplate.vue"
 
 const modelProvider = useModelProviderStore()
 const chatHistory = useChatHistoryStore()
