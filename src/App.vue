@@ -4,10 +4,14 @@
     <AppSidebar />
 
     <SidebarInset>
-      <header class="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-        <SidebarTrigger />
-        <span class="text-sm font-semibold">{{ currentTitle }}</span>
+      <header class="flex justify-between h-16 shrink-0 items-center gap-2 border-b px-4">
+        <div class="flex items-center gap-2">
+          <SidebarTrigger />
+          <span class="text-sm font-semibold">{{ currentTitle }}</span>
+        </div>
+        <ModeToggle />
       </header>
+
       <main class="flex-1 h-full flex flex-col min-h-0">
         <ChatArea />
         <ChatInput />
@@ -21,9 +25,10 @@ import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/s
 import AppSidebar from '@/components/AppSidebar.vue'
 import ChatArea from '@/components/chat/ChatArea.vue'
 import ChatInput from '@/components/chat/ChatInput.vue'
-import { useChatHistoryStore } from './stores/ChatHistoryStore'
+import { useChatHistoryStore } from '@/stores/ChatHistoryStore'
 import { computed } from 'vue'
 import { Toaster } from '@/components/ui/sonner'
+import ModeToggle from '@/components/ModeToggle.vue'
 
 const chatHistory = useChatHistoryStore()
 
