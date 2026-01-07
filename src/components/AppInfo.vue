@@ -9,7 +9,7 @@
                     AI Chat Verse
                 </DialogTitle>
                 <DialogDescription class="text-base font-medium">
-                    v.1.0.2
+                    v1.0.2
                 </DialogDescription>
             </DialogHeader>
 

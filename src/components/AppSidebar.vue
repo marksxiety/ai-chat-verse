@@ -102,7 +102,7 @@
                 <div class="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors"
                     @click="showInforDialog = true">
                     <Icon icon="lucide:info" class="h-6 w-6 text-muted-foreground" />
-                    <span class="text-sm text-muted-foreground">v.1.0.2</span>
+                    <span class="text-sm text-muted-foreground">v1.0.2</span>
                 </div>
             </div>
         </SidebarFooter>
