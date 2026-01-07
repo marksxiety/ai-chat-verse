@@ -1,12 +1,9 @@
 # AI Chat Verse
 
-A modern multi-LLM chat interface that lets you switch between AI providers and models in one unified chat experience.
+A modern multi-LLM chat interface that lets you switch between AI providers and models in one unified chat experience. This lightweight application focuses on **chat completions** functionality.
 
-## Overview
-
-AI Chat Verse is a lightweight chat application focused on **chat completions**, designed to support multiple AI providers and models under a single interface.
-
-The provider and model list is configurable in `src/data/ProviderModels.json`.
+[![Release](https://img.shields.io/github/v/release/marksxiety/ai-chat-verse)](https://github.com/marksxiety/ai-chat-verse/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Supported Providers & Models
 
@@ -24,12 +21,13 @@ The provider and model list is configurable in `src/data/ProviderModels.json`.
 - DeepSeek-V3.2 (General/Chat) (`deepseek-chat`)
 - DeepSeek-V3.2 (Thinking/R1) (`deepseek-reasoner`)
 
+**Configuration:** The provider and model list can be edited in `src/data/ProviderModels.json`.
+
 ## Limitations
 
 - Currently supports only the providers and models listed above
 - Focused exclusively on **chat completions** functionality
-- Additional AI capabilities (e.g., image generation, audio processing) are not supported
-- Provider and model list can be edited in `src/data/ProviderModels.json`
+- Additional AI capabilities (e.g., image generation, audio processing) are not yet supported
 
 ## Setup
 
@@ -72,9 +70,28 @@ Start both UI and API:
 npm run dev:all
 ```
 
+## Building for Production
+
+Build the application for production:
+```bash
+npm run build
+```
+
+Preview the production build:
+```bash
+npm run preview
+```
+
+Note: For development use `npm run dev` or `npm run dev:all`. Use `npm run build` only for production deployments.
+
 ## Features
 
 - Unified chat experience across multiple AI providers
 - Provider and model switching
 - Session-based chat history
 - Chat completions–focused design
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
