@@ -4,6 +4,8 @@ A modern multi-LLM chat interface that lets you switch between AI providers and 
 
 [![Release](https://img.shields.io/github/v/release/marksxiety/ai-chat-verse)](https://github.com/marksxiety/ai-chat-verse/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tests](https://github.com/marksxiety/ai-chat-verse/actions/workflows/tests.yml/badge.svg)](https://github.com/marksxiety/ai-chat-verse/actions/workflows/tests.yml)
+[![Build](https://github.com/marksxiety/ai-chat-verse/actions/workflows/build.yml/badge.svg)](https://github.com/marksxiety/ai-chat-verse/actions/workflows/build.yml)
 
 ## Supported Providers & Models
 
@@ -93,5 +95,5 @@ Note: For development use `npm run dev` or `npm run dev:all`. Use `npm run build
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
 
