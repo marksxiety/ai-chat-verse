@@ -2,10 +2,11 @@
 
 A modern multi-LLM chat interface that lets you switch between AI providers and models in one unified chat experience. This lightweight application focuses on **chat completions** functionality.
 
-[![Release](https://img.shields.io/github/v/release/marksxiety/ai-chat-verse)](https://github.com/marksxiety/ai-chat-verse/releases)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Tests](https://github.com/marksxiety/ai-chat-verse/actions/workflows/tests.yml/badge.svg)](https://github.com/marksxiety/ai-chat-verse/actions/workflows/tests.yml)
 [![Build](https://github.com/marksxiety/ai-chat-verse/actions/workflows/build.yml/badge.svg)](https://github.com/marksxiety/ai-chat-verse/actions/workflows/build.yml)
+[![Release](https://img.shields.io/github/v/release/marksxiety/ai-chat-verse?color=blue)](https://github.com/marksxiety/ai-chat-verse/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/Node.js-20.x%20%7C%2024.x-purple.svg)](https://nodejs.org/)
 
 ## Supported Providers & Models
 
