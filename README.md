@@ -66,40 +66,62 @@ DEEPSEEK_API_KEY=your_deepseek_api_key_here
 VITE_PORT=3001  # Optional, default port
 ```
 
-**Start development server**
+## Usage
 
-UI only:
+### Development Mode
+
+**UI only** (Frontend with hot-reload):
 ```bash
 npm run dev
 ```
+Access at `http://localhost:5173`
 
-API only:
+**Server only** (Backend API):
 ```bash
-node server/server.js
+npm run dev:server
 ```
+Access at `http://localhost:3001`
 
-Both UI and API:
+**Full stack** (Both UI and server):
 ```bash
 npm run dev:all
 ```
+Access at `http://localhost:5173`
 
-Application available at `http://localhost:3001`
+### Production Mode
 
----
-
-## Production Build
-
-Build for production:
+**Build application**:
 ```bash
 npm run build
 ```
 
-Preview production build:
+**Run production server** (serves built frontend + API):
 ```bash
-npm run preview
+npm run dev:server
+```
+Access at `http://localhost:3001`
+
+> **Note:** The production build serves both the frontend and backend through the Express server on port 3001.
+
+### Docker Deployment
+
+**Docker Compose** (Recommended):
+```bash
+cp .env.example .env
+docker-compose up --build
 ```
 
-> **Note:** Use `npm run dev:all` for development. Reserve `npm run build` for production deployments.
+**Docker** (Direct):
+```bash
+docker build -t ai-chat-verse .
+docker run -p 3001:3001 \
+  -e OPENAI_API_KEY=your_key \
+  -e ZAI_API_KEY=your_key \
+  -e DEEPSEEK_API_KEY=your_key \
+  ai-chat-verse
+```
+
+Access at `http://localhost:3001`
 
 ---
 
@@ -108,7 +130,6 @@ npm run preview
 This project is currently focused on core chat functionality:
 - Supports only chat completions (no image generation, audio processing, etc.)
 - Limited to providers and models listed above
-- No streaming response support yet
 
 ---
 
