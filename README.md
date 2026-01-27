@@ -4,6 +4,7 @@ A unified multi-LLM chat interface for seamless switching between AI providers a
 
 [![Tests](https://github.com/marksxiety/ai-chat-verse/actions/workflows/tests.yml/badge.svg)](https://github.com/marksxiety/ai-chat-verse/actions/workflows/tests.yml)
 [![Build](https://github.com/marksxiety/ai-chat-verse/actions/workflows/build.yml/badge.svg)](https://github.com/marksxiety/ai-chat-verse/actions/workflows/build.yml)
+[![Docker](https://github.com/marksxiety/ai-chat-verse/actions/workflows/docker.yml/badge.svg)](https://github.com/marksxiety/ai-chat-verse/actions/workflows/docker.yml)
 [![Release](https://img.shields.io/github/v/release/marksxiety/ai-chat-verse?color=blue)](https://github.com/marksxiety/ai-chat-verse/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-20.x%20%7C%2024.x-purple.svg)](https://nodejs.org/)
@@ -105,13 +106,23 @@ Access at `http://localhost:3001`
 
 ### Docker Deployment
 
+**Pull from GitHub Container Registry**:
+```bash
+docker pull ghcr.io/marksxiety/ai-chat-verse:latest
+docker run -p 3001:3001 \
+  -e OPENAI_API_KEY=your_key \
+  -e ZAI_API_KEY=your_key \
+  -e DEEPSEEK_API_KEY=your_key \
+  ghcr.io/marksxiety/ai-chat-verse:latest
+```
+
 **Docker Compose** (Recommended):
 ```bash
 cp .env.example .env
 docker-compose up --build
 ```
 
-**Docker** (Direct):
+**Docker** (Build from source):
 ```bash
 docker build -t ai-chat-verse .
 docker run -p 3001:3001 \
