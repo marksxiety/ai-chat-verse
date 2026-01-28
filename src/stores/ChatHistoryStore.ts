@@ -44,6 +44,10 @@ export const useChatHistoryStore = defineStore('chatHistory', () => {
     }
 
     function createNewChat(title: string = 'New Chat') {
+        if (chats.value.length > 1 && chats.value[0]?.title === 'New Chat') {
+            return
+        }
+
         const newChat: Chat = {
             id: Date.now().toString(),
             title,
